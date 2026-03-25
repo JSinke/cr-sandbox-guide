@@ -88,10 +88,355 @@
     .layout{padding:16px 12px 60px;}
     .mod-header{flex-wrap:wrap;gap:8px;}
     .kb-badge{display:none;}
+    .cover-grid{grid-template-columns:1fr!important;}
+    .cover-hero{padding:48px 24px 40px!important;}
+    .cover-stats{grid-template-columns:repeat(2,1fr)!important;}
   }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: #1A1A1A;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,171,71,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,171,71,.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-nav {
+    display: flex;
+    align-items: center;
+    padding: 28px 0 0;
+    gap: 12px;
+  }
+  .cover-logo { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: .5px; }
+  .cover-logo span { color: #3CAB47; }
+  .cover-nav-pill {
+    margin-left: auto;
+    background: rgba(60,171,71,.15);
+    border: 1px solid rgba(60,171,71,.35);
+    color: #3CAB47;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .cover-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 48px;
+    align-items: center;
+    flex: 1;
+    padding: 60px 0 48px;
+  }
+  .cover-hero { padding: 0; }
+  .cover-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(60,171,71,.12);
+    border: 1px solid rgba(60,171,71,.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3CAB47;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .cover-eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3CAB47;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:.5;transform:scale(.8);}
+  }
+  .cover-h1 {
+    font-size: 52px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.08;
+    letter-spacing: -.5px;
+    margin-bottom: 10px;
+  }
+  .cover-h1 span { color: #3CAB47; }
+  .cover-h2 {
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 24px;
+    letter-spacing: -.2px;
+  }
+  .cover-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 36px;
+  }
+  .cover-desc strong { color: #fff; font-weight: 600; }
+  .cover-cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cover-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #3CAB47;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background .15s, transform .1s;
+    letter-spacing: .2px;
+  }
+  .cover-btn:hover { background: #2A8534; transform: translateY(-1px); }
+  .cover-btn-arrow { font-size: 18px; }
+  .cover-note {
+    font-size: 12px;
+    color: rgba(255,255,255,.35);
+  }
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .cover-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cover-stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: #3CAB47;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .cover-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,.45);
+    font-weight: 500;
+  }
+
+  /* card panel on the right */
+  .cover-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .cover-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .cover-week {
+    margin-bottom: 20px;
+  }
+  .cover-week-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3CAB47;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cover-week-label::after { content:''; flex:1; height:1px; background:rgba(60,171,71,.25); }
+  .cover-module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .cover-mod-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    transition: background .12s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .cover-mod-item:hover { background: rgba(255,255,255,.06); }
+  .cover-mod-n {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #3CAB47;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cover-mod-text { font-size: 12.5px; color: rgba(255,255,255,.75); font-weight: 500; }
+
+  .cover-footer {
+    position: relative;
+    z-index: 1;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: 11px;
+    color: rgba(255,255,255,.25);
+  }
+  .cover-footer a { color: rgba(60,171,71,.7); text-decoration: none; }
+  .cover-footer a:hover { color: #3CAB47; }
 </style>
 </head>
 <body>
+
+<!-- ════════════════════════════════════════════════
+     COVER PAGE
+════════════════════════════════════════════════ -->
+<div class="cover" id="cover">
+  <div class="cover-inner">
+
+    <!-- nav bar -->
+    <div class="cover-nav">
+      <div class="cover-logo">COURT<span>RESERVE</span></div>
+      <span class="cover-nav-pill">Customer Success</span>
+    </div>
+
+    <!-- main grid -->
+    <div class="cover-grid">
+
+      <!-- left: hero -->
+      <div class="cover-hero">
+        <div class="cover-eyebrow">
+          <span class="cover-eyebrow-dot"></span>
+          New Hire Training
+        </div>
+        <div class="cover-h1">Sandbox<br><span>Training</span><br>Guide</div>
+        <div class="cover-h2">Modules 1–24</div>
+        <div class="cover-desc">
+          Your complete step-by-step guide to building a fully functional
+          CourtReserve sandbox from scratch. Every task is sourced directly
+          from the <strong>CourtReserve Knowledge Base</strong> — exact
+          navigation paths, field names, and KB quotes included.
+        </div>
+        <div class="cover-cta-row">
+          <button class="cover-btn" onclick="startTraining()">
+            Start Training <span class="cover-btn-arrow">↓</span>
+          </button>
+          <span class="cover-note">24 modules · ~2 weeks · KB sourced</span>
+        </div>
+
+        <div class="cover-stats">
+          <div class="cover-stat">
+            <div class="cover-stat-num">24</div>
+            <div class="cover-stat-label">Modules</div>
+          </div>
+          <div class="cover-stat">
+            <div class="cover-stat-num">2</div>
+            <div class="cover-stat-label">Weeks</div>
+          </div>
+          <div class="cover-stat">
+            <div class="cover-stat-num">100%</div>
+            <div class="cover-stat-label">KB Sourced</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: module index card -->
+      <div class="cover-card">
+        <div class="cover-card-title">What's Inside</div>
+
+        <div class="cover-week">
+          <div class="cover-week-label">Week 1 — Foundations</div>
+          <div class="cover-module-list">
+            <a class="cover-mod-item" onclick="goTo('m1')"><span class="cover-mod-n">1</span><span class="cover-mod-text">Memberships</span></a>
+            <a class="cover-mod-item" onclick="goTo('m2')"><span class="cover-mod-n">2</span><span class="cover-mod-text">General Settings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m3')"><span class="cover-mod-n">3</span><span class="cover-mod-text">System Users</span></a>
+            <a class="cover-mod-item" onclick="goTo('m4')"><span class="cover-mod-n">4</span><span class="cover-mod-text">Courts &amp; Closures</span></a>
+            <a class="cover-mod-item" onclick="goTo('m5')"><span class="cover-mod-n">5</span><span class="cover-mod-text">Custom Schedulers</span></a>
+            <a class="cover-mod-item" onclick="goTo('m6')"><span class="cover-mod-n">6</span><span class="cover-mod-text">Reservations &amp; Booking Settings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m7')"><span class="cover-mod-n">7</span><span class="cover-mod-text">Events</span></a>
+            <a class="cover-mod-item" onclick="goTo('m8')"><span class="cover-mod-n">8</span><span class="cover-mod-text">Lessons &amp; Instructors</span></a>
+            <a class="cover-mod-item" onclick="goTo('m9')"><span class="cover-mod-n">9</span><span class="cover-mod-text">Member Portal Setup</span></a>
+            <a class="cover-mod-item" onclick="goTo('m10')"><span class="cover-mod-n">10</span><span class="cover-mod-text">Getting Players Into CourtReserve</span></a>
+          </div>
+        </div>
+
+        <div class="cover-week">
+          <div class="cover-week-label">Week 2 — Financial &amp; Premium</div>
+          <div class="cover-module-list">
+            <a class="cover-mod-item" onclick="goTo('m11')"><span class="cover-mod-n">11</span><span class="cover-mod-text">Integrated Payments</span></a>
+            <a class="cover-mod-item" onclick="goTo('m12')"><span class="cover-mod-n">12</span><span class="cover-mod-text">Financial Settings &amp; Fees</span></a>
+            <a class="cover-mod-item" onclick="goTo('m13')"><span class="cover-mod-n">13</span><span class="cover-mod-text">Financial Reporting</span></a>
+            <a class="cover-mod-item" onclick="goTo('m14')"><span class="cover-mod-n">14</span><span class="cover-mod-text">Point of Sale</span></a>
+            <a class="cover-mod-item" onclick="goTo('m15')"><span class="cover-mod-n">15</span><span class="cover-mod-text">Batch Billing &amp; Invoicing</span></a>
+            <a class="cover-mod-item" onclick="goTo('m16')"><span class="cover-mod-n">16</span><span class="cover-mod-text">Packages</span></a>
+            <a class="cover-mod-item" onclick="goTo('m17')"><span class="cover-mod-n">17</span><span class="cover-mod-text">Waivers</span></a>
+            <a class="cover-mod-item" onclick="goTo('m18')"><span class="cover-mod-n">18</span><span class="cover-mod-text">Notifications</span></a>
+            <a class="cover-mod-item" onclick="goTo('m19')"><span class="cover-mod-n">19</span><span class="cover-mod-text">Additional Features</span></a>
+            <a class="cover-mod-item" onclick="goTo('m20')"><span class="cover-mod-n">20</span><span class="cover-mod-text">Custom Ratings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m21')"><span class="cover-mod-n">21</span><span class="cover-mod-text">Member Groups &amp; Directory</span></a>
+            <a class="cover-mod-item" onclick="goTo('m22')"><span class="cover-mod-n">22</span><span class="cover-mod-text">Audit Log</span></a>
+            <a class="cover-mod-item" onclick="goTo('m23')"><span class="cover-mod-n">23</span><span class="cover-mod-text">Non-Financial Reports</span></a>
+            <a class="cover-mod-item" onclick="goTo('m24')"><span class="cover-mod-n">24</span><span class="cover-mod-text">Widgets &amp; Organized Play</span></a>
+          </div>
+        </div>
+
+      </div><!-- end cover-card -->
+    </div><!-- end cover-grid -->
+  </div><!-- end cover-inner -->
+
+  <div class="cover-footer">
+    <span>CourtReserve Customer Success · New Hire Sandbox Training Guide</span>
+    <span>All steps sourced from the <a href="https://help.courtreserve.com" target="_blank">CourtReserve Knowledge Base</a></span>
+  </div>
+</div><!-- end cover -->
+
+<!-- ════════════════════════════════════════════════
+     TRAINING GUIDE (Modules 1–24)
+════════════════════════════════════════════════ -->
+<div id="training-top"></div>
 
 <div class="header">
   <div>
@@ -517,7 +862,7 @@
         <div class="task-section"><div class="task-label">Method 1 — Member Import (Know the Rules)</div>
           <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-text">Read the Member List Import KB article. Download the Excel template. Memorize the import rules.</div><div class="step-note">KB: "Each organization is allowed a single member import. Any members already in your organization will not be imported — the process is strictly for new players. We cannot import Events, Reservations, or historical financial data."</div></div></div>
           <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-text">Required fields: <code>First Name</code>, <code>Last Name</code>, <code>Email</code>. Template has two tabs: Individual Memberships and Family Memberships — they are separate sheets. Membership names must exactly match what's in CourtReserve.</div></div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-text">Process: (1) Fill template → (2) Submit 3–5 row test to support@courtreserve.com → (3) Incorporate feedback → (4) Submit full file. The CR Import Team handles all actual imports — admins cannot self-import.</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-text">Process: (1) Fill template → (2) Submit 3–5 row test to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="90e3e5e0e0ffe2e4d0f3ffe5e2e4e2f5e3f5e2e6f5bef3fffd">[email&#160;protected]</a> → (3) Incorporate feedback → (4) Submit full file. The CR Import Team handles all actual imports — admins cannot self-import.</div></div></div>
         </div><div class="tdiv"></div>
         <div class="task-section"><div class="task-label">Method 2 — Sign-Up Form</div>
           <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>PORTAL SETTINGS</code> row > click <code>Sign-Up Form</code>.</div><div class="step-note">KB: "The Required Fields section is fixed — every sign-up form must collect the player's name and email address."</div></div></div>
@@ -589,8 +934,7 @@
         </div><div class="tdiv"></div>
         <div class="task-section"><div class="task-label">Credits, Misc Fees &amp; Recurring Fees</div>
           <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-text">Navigate to a test member's profile > Billing tab. Click <code>Add Misc Fee</code>. Enter $5, add a description note. Save.</div></div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-text">On a second test member's profile, click <code>Add Credit</code>. Enter $10, add a note. Save. The credit posts to their house account balance.</div></div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Recurring Fees</code>. Create a test recurring fee: $5/month "locker fee" for Gold Members. Assign to the membership type. Save.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-text">On a second test member's profile, click <code>Add Credit</code>. Enter $10, add a note. Save. The credit posts to their house ac-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Recurring Fees</code>. Create a test recurring fee: $5/month "locker fee" for Gold Members. Assign to the membership type. Save.</div></div></div>
         </div><div class="tdiv"></div>
         <div class="task-section"><div class="task-label">Practice Issuing Refunds</div>
           <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-text">Make a test transaction: apply a $10 misc fee to a member and collect payment via the test credit card.</div></div></div>
@@ -976,6 +1320,21 @@ function openMod(id) {
     btn.classList.add('open');
     btn.innerHTML = 'Hide steps <i class="chev">&#9660;</i>';
   }
+}
+
+function startTraining() {
+  document.getElementById('training-top').scrollIntoView({ behavior: 'smooth' });
+}
+
+function goTo(id) {
+  startTraining();
+  setTimeout(function() {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      openMod(id);
+    }
+  }, 400);
 }
 </script>
 
