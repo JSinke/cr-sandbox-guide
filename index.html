@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CourtReserve CS Sandbox Training Guide | Modules 1–24</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F4F4F4; color: #1A1A1A; line-height: 1.6; }
+
+  /* ── HEADER ── */
+  .header { background: #1A1A1A; padding: 24px 32px; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 10px rgba(0,0,0,.4); display: flex; align-items: center; gap: 16px; }
+  .logo-text { font-size: 21px; font-weight: 800; letter-spacing: .5px; color: #fff; }
+  .logo-text span { color: #3CAB47; }
+  .header-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .header-right { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .header-badge { background: #3CAB47; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: .5px; }
+  .header-date { font-size: 11px; color: #666; }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; max-width: 1120px; margin: 0 auto; padding: 28px 20px 80px; gap: 28px; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { width: 210px; flex-shrink: 0; }
+  .sidebar-inner { position: sticky; top: 88px; background: #fff; border: 1px solid #E5E5E5; border-radius: 10px; overflow: hidden; }
+  .sidebar-title { background: #1A1A1A; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; padding: 10px 14px; }
+  .sidebar-group { padding: 8px 0; border-bottom: 1px solid #F0F0F0; }
+  .sidebar-group:last-child { border-bottom: none; }
+  .sidebar-group-label { font-size: 10px; font-weight: 700; color: #3CAB47; letter-spacing: .8px; text-transform: uppercase; padding: 4px 14px 2px; }
+  .sidebar a { display: flex; align-items: center; gap: 7px; padding: 5px 14px; font-size: 12px; color: #444; text-decoration: none; border-left: 3px solid transparent; transition: all .12s; }
+  .sidebar a:hover { background: #F7FFF7; border-left-color: #3CAB47; color: #1A1A1A; }
+  .sidebar a .sn { width: 18px; height: 18px; border-radius: 50%; background: #3CAB47; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  .main { flex: 1; min-width: 0; }
+  .intro-bar { background: #fff; border-left: 4px solid #3CAB47; border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 24px; font-size: 13.5px; color: #444; line-height: 1.6; }
+  .intro-bar strong { color: #1A1A1A; }
+
+  /* ── PHASE ── */
+  .phase-header { display: flex; align-items: center; gap: 10px; margin: 32px 0 10px; }
+  .phase-tag { background: #1A1A1A; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 6px; letter-spacing: .6px; white-space: nowrap; }
+  .phase-title { font-size: 14px; font-weight: 600; color: #333; white-space: nowrap; }
+  .phase-line { flex: 1; height: 1px; background: #DDD; }
+
+  /* ── MODULE CARD ── */
+  .module { background: #fff; border: 1px solid #E5E5E5; border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+  .mod-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; transition: background .12s; }
+  .mod-header:hover { background: #FAFAFA; }
+  .mod-num { width: 30px; height: 30px; border-radius: 50%; background: #3CAB47; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mod-info { flex: 1; min-width: 0; }
+  .mod-title { font-size: 14px; font-weight: 600; }
+  .mod-desc { font-size: 12px; color: #777; margin-top: 2px; }
+  .kb-badge { font-size: 10px; color: #3CAB47; background: #E8F5E9; border: 1px solid #C8E6CA; border-radius: 20px; padding: 3px 9px; white-space: nowrap; font-weight: 600; flex-shrink: 0; }
+  .toggle-btn { background: none; border: 1px solid #DDD; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 500; cursor: pointer; color: #444; white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 5px; transition: all .15s; }
+  .toggle-btn:hover { border-color: #3CAB47; color: #3CAB47; }
+  .toggle-btn.open { background: #3CAB47; border-color: #3CAB47; color: #fff; }
+  .chev { display: inline-block; font-style: normal; font-size: 9px; transition: transform .2s; }
+  .toggle-btn.open .chev { transform: rotate(180deg); }
+
+  /* ── PANEL ── */
+  .panel { display: none; border-top: 1px solid #EBEBEB; }
+  .panel.open { display: block; }
+  .kb-strip { background: #F9FFF9; border-bottom: 1px solid #EBEBEB; padding: 8px 16px; font-size: 11px; color: #666; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .kb-strip strong { color: #1A1A1A; margin-right: 2px; flex-shrink: 0; }
+  .kb-strip a { color: #3CAB47; text-decoration: none; font-weight: 500; }
+  .kb-strip a:hover { text-decoration: underline; }
+
+  /* ── TASKS & STEPS ── */
+  .task-section { padding: 14px 16px 0; }
+  .task-section:last-of-type { padding-bottom: 16px; }
+  .task-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: #3CAB47; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .task-label::after { content: ''; flex: 1; height: 1px; background: #EBEBEB; }
+  .step { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .step:last-child { margin-bottom: 0; }
+  .step-n { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; background: #1A1A1A; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .step-body { flex: 1; }
+  .step-text { font-size: 13px; color: #1A1A1A; line-height: 1.55; }
+  .step-text code { font-family: 'Courier New', monospace; font-size: 11px; background: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 3px; padding: 1px 5px; }
+  .step-note { font-size: 11.5px; color: #666; margin-top: 6px; line-height: 1.5; border-left: 2px solid #3CAB47; padding-left: 8px; }
+  .tdiv { height: 1px; background: #F0F0F0; margin: 12px 0; }
+
+  /* ── FOOTER ── */
+  .footer { text-align: center; padding: 32px 20px; font-size: 12px; color: #999; }
+  .footer strong { color: #3CAB47; }
+
+  @media(max-width:760px){
+    .sidebar{display:none;}
+    .layout{padding:16px 12px 60px;}
+    .mod-header{flex-wrap:wrap;gap:8px;}
+    .kb-badge{display:none;}
+    .cover-grid{grid-template-columns:1fr!important;}
+    .cover-hero{padding:48px 24px 40px!important;}
+    .cover-stats{grid-template-columns:repeat(2,1fr)!important;}
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: #1A1A1A;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,171,71,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(60,171,71,.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-nav {
+    display: flex;
+    align-items: center;
+    padding: 28px 0 0;
+    gap: 12px;
+  }
+  .cover-logo { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: .5px; }
+  .cover-logo span { color: #3CAB47; }
+  .cover-nav-pill {
+    margin-left: auto;
+    background: rgba(60,171,71,.15);
+    border: 1px solid rgba(60,171,71,.35);
+    color: #3CAB47;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .cover-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 48px;
+    align-items: center;
+    flex: 1;
+    padding: 60px 0 48px;
+  }
+  .cover-hero { padding: 0; }
+  .cover-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(60,171,71,.12);
+    border: 1px solid rgba(60,171,71,.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3CAB47;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .cover-eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3CAB47;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:.5;transform:scale(.8);}
+  }
+  .cover-h1 {
+    font-size: 52px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.08;
+    letter-spacing: -.5px;
+    margin-bottom: 10px;
+  }
+  .cover-h1 span { color: #3CAB47; }
+  .cover-h2 {
+    font-size: 28px;
+    font-weight: 300;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 24px;
+    letter-spacing: -.2px;
+  }
+  .cover-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 36px;
+  }
+  .cover-desc strong { color: #fff; font-weight: 600; }
+  .cover-cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cover-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #3CAB47;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background .15s, transform .1s;
+    letter-spacing: .2px;
+  }
+  .cover-btn:hover { background: #2A8534; transform: translateY(-1px); }
+  .cover-btn-arrow { font-size: 18px; }
+  .cover-note {
+    font-size: 12px;
+    color: rgba(255,255,255,.35);
+  }
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .cover-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cover-stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: #3CAB47;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .cover-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,.45);
+    font-weight: 500;
+  }
+
+  /* card panel on the right */
+  .cover-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .cover-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .cover-week {
+    margin-bottom: 20px;
+  }
+  .cover-week-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3CAB47;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cover-week-label::after { content:''; flex:1; height:1px; background:rgba(60,171,71,.25); }
+  .cover-module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .cover-mod-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    transition: background .12s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .cover-mod-item:hover { background: rgba(255,255,255,.06); }
+  .cover-mod-n {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #3CAB47;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cover-mod-text { font-size: 12.5px; color: rgba(255,255,255,.75); font-weight: 500; }
+
+  .cover-footer {
+    position: relative;
+    z-index: 1;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: 11px;
+    color: rgba(255,255,255,.25);
+  }
+  .cover-footer a { color: rgba(60,171,71,.7); text-decoration: none; }
+  .cover-footer a:hover { color: #3CAB47; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: #1A1A1A;
+    border-radius: 10px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .progress-label { font-size: 12px; color: rgba(255,255,255,.5); white-space: nowrap; font-weight: 500; }
+  .progress-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: #3CAB47; border-radius: 3px; transition: width .4s ease; width: 0%; }
+  .progress-pct { font-size: 13px; font-weight: 700; color: #3CAB47; min-width: 38px; text-align: right; }
+  .reset-btn {
+    font-size: 11px; color: rgba(255,255,255,.3); background: none; border: 1px solid rgba(255,255,255,.12);
+    border-radius: 5px; padding: 4px 10px; cursor: pointer; transition: all .15s; white-space: nowrap;
+  }
+  .reset-btn:hover { color: #ff6b6b; border-color: rgba(255,107,107,.5); }
+
+  /* ── MODULE CHECKBOX ── */
+  .mod-check {
+    width: 22px; height: 22px; min-width: 22px;
+    border: 2px solid #DDD;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+    flex-shrink: 0;
+    background: #fff;
+    margin-right: 2px;
+  }
+  .mod-check:hover { border-color: #3CAB47; }
+  .mod-check.checked { background: #3CAB47; border-color: #3CAB47; }
+  .mod-check.checked::after { content: "\2713"; color: #fff; font-size: 13px; font-weight: 800; line-height: 1; }
+  .mod-check.auto { background: #3CAB47; border-color: #3CAB47; }
+  .mod-check.auto::after { content: "\2713"; color: #fff; font-size: 13px; font-weight: 800; line-height: 1; }
+  /* completed module — green left border */
+  .module.complete { border-left: 3px solid #3CAB47; }
+  .module.complete .mod-title { color: #3CAB47; }
+
+  /* ── STEP CHECKBOXES ── */
+  .step-check {
+    width: 18px; height: 18px; min-width: 18px;
+    border: 2px solid #DDD;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 3px;
+    transition: all .15s;
+    flex-shrink: 0;
+    background: #fff;
+  }
+  .step-check:hover { border-color: #3CAB47; }
+  .step-check.checked { background: #3CAB47; border-color: #3CAB47; }
+  .step-check.checked::after { content: "\2713"; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; }
+  .step.done .step-text { color: #AAA; text-decoration: line-through; text-decoration-color: #CCC; }
+  .step.done .step-n { background: #3CAB47; }
+  .step.done .step-note { opacity: .5; }
+
+
+  /* ── CUSTOM CONFIRM DIALOG ── */
+  .confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .confirm-overlay.show { display: flex; }
+  .confirm-box {
+    background: #1A1A1A;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    padding: 28px 32px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .confirm-icon { font-size: 32px; margin-bottom: 12px; }
+  .confirm-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .confirm-msg {
+    font-size: 13px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .confirm-buttons { display: flex; gap: 10px; justify-content: center; }
+  .confirm-cancel {
+    flex: 1;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: transparent;
+    color: rgba(255,255,255,.6);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .confirm-cancel:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+  .confirm-ok {
+    flex: 1;
+    padding: 10px;
+    border-radius: 7px;
+    border: none;
+    background: #e53935;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .confirm-ok:hover { background: #c62828; }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     COVER PAGE
+════════════════════════════════════════════════ -->
+<div class="cover" id="cover">
+  <div class="cover-inner">
+
+    <!-- nav bar -->
+    <div class="cover-nav">
+      <div class="cover-logo">COURT<span>RESERVE</span></div>
+      <span class="cover-nav-pill">Customer Success</span>
+    </div>
+
+    <!-- main grid -->
+    <div class="cover-grid">
+
+      <!-- left: hero -->
+      <div class="cover-hero">
+        <div class="cover-eyebrow">
+          <span class="cover-eyebrow-dot"></span>
+          New Hire Training
+        </div>
+        <div class="cover-h1">Sandbox<br><span>Training</span><br>Guide</div>
+        <div class="cover-h2">Modules 1–24</div>
+        <div class="cover-desc">
+          Your complete step-by-step guide to building a fully functional
+          CourtReserve sandbox from scratch. Every task is sourced directly
+          from the <strong>CourtReserve Knowledge Base</strong> — exact
+          navigation paths, field names, and KB quotes included.
+        </div>
+        <div class="cover-cta-row">
+          <button class="cover-btn" onclick="startTraining()">
+            Start Training <span class="cover-btn-arrow">↓</span>
+          </button>
+          <span class="cover-note">24 modules · ~2 weeks · KB sourced</span>
+        </div>
+
+        <div class="cover-stats">
+          <div class="cover-stat">
+            <div class="cover-stat-num">24</div>
+            <div class="cover-stat-label">Modules</div>
+          </div>
+          <div class="cover-stat">
+            <div class="cover-stat-num">2</div>
+            <div class="cover-stat-label">Weeks</div>
+          </div>
+          <div class="cover-stat">
+            <div class="cover-stat-num">100%</div>
+            <div class="cover-stat-label">KB Sourced</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: module index card -->
+      <div class="cover-card">
+        <div class="cover-card-title">What's Inside</div>
+
+        <div class="cover-week">
+          <div class="cover-week-label">Week 1 — Foundations</div>
+          <div class="cover-module-list">
+            <a class="cover-mod-item" onclick="goTo('m1')"><span class="cover-mod-n">1</span><span class="cover-mod-text">Memberships</span></a>
+            <a class="cover-mod-item" onclick="goTo('m2')"><span class="cover-mod-n">2</span><span class="cover-mod-text">General Settings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m3')"><span class="cover-mod-n">3</span><span class="cover-mod-text">System Users</span></a>
+            <a class="cover-mod-item" onclick="goTo('m4')"><span class="cover-mod-n">4</span><span class="cover-mod-text">Courts &amp; Closures</span></a>
+            <a class="cover-mod-item" onclick="goTo('m5')"><span class="cover-mod-n">5</span><span class="cover-mod-text">Custom Schedulers</span></a>
+            <a class="cover-mod-item" onclick="goTo('m6')"><span class="cover-mod-n">6</span><span class="cover-mod-text">Reservations &amp; Booking Settings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m7')"><span class="cover-mod-n">7</span><span class="cover-mod-text">Events</span></a>
+            <a class="cover-mod-item" onclick="goTo('m8')"><span class="cover-mod-n">8</span><span class="cover-mod-text">Lessons &amp; Instructors</span></a>
+            <a class="cover-mod-item" onclick="goTo('m9')"><span class="cover-mod-n">9</span><span class="cover-mod-text">Member Portal Setup</span></a>
+            <a class="cover-mod-item" onclick="goTo('m10')"><span class="cover-mod-n">10</span><span class="cover-mod-text">Getting Players Into CourtReserve</span></a>
+          </div>
+        </div>
+
+        <div class="cover-week">
+          <div class="cover-week-label">Week 2 — Financial &amp; Premium</div>
+          <div class="cover-module-list">
+            <a class="cover-mod-item" onclick="goTo('m11')"><span class="cover-mod-n">11</span><span class="cover-mod-text">Integrated Payments</span></a>
+            <a class="cover-mod-item" onclick="goTo('m12')"><span class="cover-mod-n">12</span><span class="cover-mod-text">Financial Settings &amp; Fees</span></a>
+            <a class="cover-mod-item" onclick="goTo('m13')"><span class="cover-mod-n">13</span><span class="cover-mod-text">Financial Reporting</span></a>
+            <a class="cover-mod-item" onclick="goTo('m14')"><span class="cover-mod-n">14</span><span class="cover-mod-text">Point of Sale</span></a>
+            <a class="cover-mod-item" onclick="goTo('m15')"><span class="cover-mod-n">15</span><span class="cover-mod-text">Batch Billing &amp; Invoicing</span></a>
+            <a class="cover-mod-item" onclick="goTo('m16')"><span class="cover-mod-n">16</span><span class="cover-mod-text">Packages</span></a>
+            <a class="cover-mod-item" onclick="goTo('m17')"><span class="cover-mod-n">17</span><span class="cover-mod-text">Waivers</span></a>
+            <a class="cover-mod-item" onclick="goTo('m18')"><span class="cover-mod-n">18</span><span class="cover-mod-text">Notifications</span></a>
+            <a class="cover-mod-item" onclick="goTo('m19')"><span class="cover-mod-n">19</span><span class="cover-mod-text">Additional Features</span></a>
+            <a class="cover-mod-item" onclick="goTo('m20')"><span class="cover-mod-n">20</span><span class="cover-mod-text">Custom Ratings</span></a>
+            <a class="cover-mod-item" onclick="goTo('m21')"><span class="cover-mod-n">21</span><span class="cover-mod-text">Member Groups &amp; Directory</span></a>
+            <a class="cover-mod-item" onclick="goTo('m22')"><span class="cover-mod-n">22</span><span class="cover-mod-text">Audit Log</span></a>
+            <a class="cover-mod-item" onclick="goTo('m23')"><span class="cover-mod-n">23</span><span class="cover-mod-text">Non-Financial Reports</span></a>
+            <a class="cover-mod-item" onclick="goTo('m24')"><span class="cover-mod-n">24</span><span class="cover-mod-text">Widgets &amp; Organized Play</span></a>
+          </div>
+        </div>
+
+      </div><!-- end cover-card -->
+    </div><!-- end cover-grid -->
+  </div><!-- end cover-inner -->
+
+  <div class="cover-footer">
+    <span>CourtReserve Customer Success · New Hire Sandbox Training Guide</span>
+    <span>All steps sourced from the <a href="https://help.courtreserve.com" target="_blank">CourtReserve Knowledge Base</a></span>
+  </div>
+</div><!-- end cover -->
+
+<!-- ════════════════════════════════════════════════
+     TRAINING GUIDE (Modules 1–24)
+════════════════════════════════════════════════ -->
+
+<div id="training-top"></div>
+
+<div class="header">
+  <div>
+    <div class="logo-text">COURT<span>RESERVE</span></div>
+    <div class="header-sub">Customer Success New Hire — Sandbox Training Guide</div>
+  </div>
+  <div class="header-right">
+    <span class="header-badge">All 24 Modules · KB Sourced</span>
+    <span class="header-date">Modules 1–24 · Week 1 &amp; Week 2</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ════ SIDEBAR ════ -->
+  <nav class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-title">Jump to Module</div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Week 1 — Foundations</div>
+        <a href="#m1" onclick="openMod('m1')"><span class="sn">1</span>Memberships</a>
+        <a href="#m2" onclick="openMod('m2')"><span class="sn">2</span>General Settings</a>
+        <a href="#m3" onclick="openMod('m3')"><span class="sn">3</span>System Users</a>
+        <a href="#m4" onclick="openMod('m4')"><span class="sn">4</span>Courts &amp; Closures</a>
+        <a href="#m5" onclick="openMod('m5')"><span class="sn">5</span>Custom Schedulers</a>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Week 1 — Core Features</div>
+        <a href="#m6" onclick="openMod('m6')"><span class="sn">6</span>Reservations</a>
+        <a href="#m7" onclick="openMod('m7')"><span class="sn">7</span>Events</a>
+        <a href="#m8" onclick="openMod('m8')"><span class="sn">8</span>Lessons</a>
+        <a href="#m9" onclick="openMod('m9')"><span class="sn">9</span>Member Portal</a>
+        <a href="#m10" onclick="openMod('m10')"><span class="sn">10</span>Getting Players In</a>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Week 2 — Financial</div>
+        <a href="#m11" onclick="openMod('m11')"><span class="sn">11</span>Payments</a>
+        <a href="#m12" onclick="openMod('m12')"><span class="sn">12</span>Financial Settings</a>
+        <a href="#m13" onclick="openMod('m13')"><span class="sn">13</span>Financial Reports</a>
+        <a href="#m14" onclick="openMod('m14')"><span class="sn">14</span>POS</a>
+        <a href="#m15" onclick="openMod('m15')"><span class="sn">15</span>Batch Billing</a>
+        <a href="#m16" onclick="openMod('m16')"><span class="sn">16</span>Packages</a>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Week 2 — Premium</div>
+        <a href="#m17" onclick="openMod('m17')"><span class="sn">17</span>Waivers</a>
+        <a href="#m18" onclick="openMod('m18')"><span class="sn">18</span>Notifications</a>
+        <a href="#m19" onclick="openMod('m19')"><span class="sn">19</span>Add'l Features</a>
+        <a href="#m20" onclick="openMod('m20')"><span class="sn">20</span>Custom Ratings</a>
+        <a href="#m21" onclick="openMod('m21')"><span class="sn">21</span>Member Groups</a>
+        <a href="#m22" onclick="openMod('m22')"><span class="sn">22</span>Audit Log</a>
+        <a href="#m23" onclick="openMod('m23')"><span class="sn">23</span>Non-Fin. Reports</a>
+        <a href="#m24" onclick="openMod('m24')"><span class="sn">24</span>Widgets</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="main">
+
+    <!-- PROGRESS BAR — always visible inside training section -->
+    <div class="progress-wrap" id="progress-wrap">
+      <span class="progress-label">Training Progress</span>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <span class="progress-pct" id="progress-pct">0%</span>
+      <button class="reset-btn" onclick="masterReset()">&#8635; Master Reset</button>
+    </div>
+
+    <div class="intro-bar">
+      Every module below is sourced directly from the <strong>CourtReserve Knowledge Base</strong>. Each card contains exact navigation paths, field names, sandbox tasks, and KB quotes. Click <strong>Show Steps</strong> to expand any module. Use the sidebar to jump between modules.
+    </div>
+
+    <!-- ══════════════════════════════════════
+         WEEK 1 — PLATFORM FOUNDATIONS
+    ══════════════════════════════════════ -->
+    <div class="phase-header">
+      <span class="phase-tag">WEEK 1</span>
+      <span class="phase-title">Platform Foundations — Sandbox Setup</span>
+      <div class="phase-line"></div>
+    </div>
+
+    <!-- MODULE 1 -->
+    <div class="module" id="m1" data-mid="mod-1">
+      <div class="mod-header" onclick="tog('m1')">
+        <div class="mod-check" data-mid="mod-1" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">1</div>
+        <div class="mod-info"><div class="mod-title">Module 1 — Memberships</div><div class="mod-desc">Create 4 membership types (Non-Member, paid Individual, Family Standard, Family Premium)</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m1">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m1">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/8014242-create-membership-types" target="_blank">Create Membership Types</a> ·
+          <a href="http://help.courtreserve.com/en/articles/8099920-membership-type-general" target="_blank">Membership Type – General</a> ·
+          <a href="http://help.courtreserve.com/en/articles/5572833-membership-type-membership-price" target="_blank">Membership Type – Price</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4593434-create-a-basic-non-member-membership" target="_blank">Create a Non-Member Membership</a> ·
+          <a href="http://help.courtreserve.com/en/articles/1502868-create-family-membership-types" target="_blank">Create Family Membership Types</a>
+        </div>
+        <div class="task-section"><div class="task-label">Navigate to Memberships</div>
+          <div class="step" data-sid="step-1" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">In the left nav, click <code>MEMBERSHIPS</code>. You'll see two tabs: <code>Individual</code> and <code>Family</code>.</div><div class="step-note">KB: "Each registered person on the platform must have a membership type. System users can create and assign membership types to grant club-specific platform permissions, restrictions, and fees."</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Task 1 of 4 — Non-Member (Individual, free)</div>
+          <div class="step" data-sid="step-2" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">On the <code>Individual</code> tab, click the green <code>Create</code> button. Name: <code>Non-Member</code>. Short Code optional. Click <code>Save</code>.</div></div></div>
+          <div class="step" data-sid="step-3" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">On the <code>General</code> tab: confirm <code>Is Active</code> is checked. Optionally check <code>Make This Membership Default For Members</code>.</div><div class="step-note">KB: "If the box is unchecked, this membership is not available and will be hidden from both the member portal and the admin panel view."</div></div></div>
+          <div class="step" data-sid="step-4" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Click the <code>Membership Price</code> tab. Leave <code>Requires Fee?</code> <strong>unchecked</strong> — this is a free membership.</div><div class="step-note">KB: "A basic Non-Member membership typically does not include a membership fee, so the Requires Fee? option is left unchecked."</div></div></div>
+          <div class="step" data-sid="step-5" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text">On the <code>Reservation Rules</code> tab, leave court booking enabled for sandbox testing. On the <code>Portal Settings</code> tab, check <code>Is Public</code>. Click <code>Save Changes</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Task 2 of 4 — Paid Individual (your choice of name)</div>
+          <div class="step" data-sid="step-6" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Click <code>Create</code> again. Name it something like <code>Gold Member</code>. Click <code>Save</code>.</div></div></div>
+          <div class="step" data-sid="step-7" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">On <code>Membership Price</code>, check <code>Requires Fee?</code>. Under <code>Frequency</code>, check <code>Monthly</code> and enter $50. You can enable multiple frequencies so members can choose.</div><div class="step-note">KB: "For a single membership type, you can enable one or multiple frequency options, allowing players to choose the option that best suits them."</div></div></div>
+          <div class="step" data-sid="step-8" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Optionally set <code>X Days Past Due to Expire Account</code> (grace period) and <code>X Days Past Due to Auto-Cancel</code>. Click <code>Save Changes</code>.</div><div class="step-note">KB: "If set to 0 days, memberships expire immediately at midnight after the renewal date if payment hasn't been received. Both settings are calculated from the original due date, not from each other."</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Task 3 of 4 — Family Standard (monthly)</div>
+          <div class="step" data-sid="step-9" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Click the <code>Family</code> tab > <code>Create Family Membership</code>. Name: <code>Family Standard</code>. Save.</div></div></div>
+          <div class="step" data-sid="step-10" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">On <code>General</code>, set <code>Max Family Members</code> (e.g. 4).</div><div class="step-note">KB: "When a system user creates a Family membership type, CourtReserve shows an additional field: Max Family Members."</div></div></div>
+          <div class="step" data-sid="step-11" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">On <code>Membership Price</code>: check <code>Requires Fee?</code>, set frequency to Monthly at $80/month. Click <code>Save Changes</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Task 4 of 4 — Family Premium (annual + proration)</div>
+          <div class="step" data-sid="step-12" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Create another Family Membership named <code>Family Premium</code>. On <code>Membership Price</code>: enable <code>Yearly</code> at $800/year.</div></div></div>
+          <div class="step" data-sid="step-13" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Enable <code>Prorate Membership on Member Portal</code> so all members align to the same billing cycle.</div><div class="step-note">KB example: "A new member joins October 27 at $50/month. With proration, the system charges $8.06 for Oct 27–31 ($1.61/day), and the next full payment is November 1st."</div></div></div>
+          <div class="step" data-sid="step-14" data-mid="mod-1"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Click <code>Save Changes</code>. Verify all 4 memberships appear in <code>Reports</code> > <code>Membership Status Report</code>.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 2 -->
+    <div class="module" id="m2" data-mid="mod-2">
+      <div class="mod-header" onclick="tog('m2')">
+        <div class="mod-check" data-mid="mod-2" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">2</div>
+        <div class="mod-info"><div class="mod-title">Module 2 — General Settings</div><div class="mod-desc">Organization settings, hours of operation, calendar feed, two-factor authentication</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m2">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m2">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/1358300-general-organizational-settings" target="_blank">Organization Settings: General</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/4360122-hours-of-operation" target="_blank">Hours of Operation</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/3642069-calendar-feeds" target="_blank">CourtReserve Calendar Feed</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/9938999-two-factor-authentication-for-system-users" target="_blank">Two-Factor Authentication</a>
+        </div>
+        <div class="task-section"><div class="task-label">Review General Settings — know every field</div>
+          <div class="step" data-sid="step-15" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>Organization Settings</code> row > click the <code>General</code> icon. Read every field on this page.</div></div></div>
+          <div class="step" data-sid="step-16" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Key fields: <code>Time Zone</code> (all scheduling), <code>Reservation Min Interval</code> (time block size on scheduler — e.g. 60 min = slots every hour), <code>Default Scheduler</code> (Expanded is standard unless auto-assigning courts).</div><div class="step-note">KB: "These settings lay the foundation for how your club operates within CourtReserve — from hours of operation to reservation rules and email preferences."</div></div></div>
+          <div class="step" data-sid="step-17" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Note the <code>Send Event/Reservation Reminders</code> toggles and the <code>X Hours Prior</code> fields — admins control how far in advance reminder emails fire. Don't change anything yet, just read and understand.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Set Hours of Operation</div>
+          <div class="step" data-sid="step-18" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>Organization Settings</code> row > click <code>Hours of Operation</code>. Set Open = 9:00 AM, Close = 9:00 PM on Monday.</div></div></div>
+          <div class="step" data-sid="step-19" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Click <code>Mark other days as current day</code> to copy those hours to all 7 days at once.</div><div class="step-note">KB: "If the hours are the same each day, use the Mark other days as current day button to copy the current day's hours to all other days."</div></div></div>
+          <div class="step" data-sid="step-20" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Leave <code>Update Court Schedules</code> checked (it's the default). This auto-updates all individual court schedules to match. Click <code>Save</code>.</div><div class="step-note">KB: "If Update Court Schedules is selected (the default setting), the daily court schedules will automatically update to reflect changes made to the Hours of Operation."</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Get Your Calendar Feed Link</div>
+          <div class="step" data-sid="step-21" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Open the member portal > click your name in the top-right corner > click <code>Calendar Feed</code>. Select <code>Copy Link</code>.</div><div class="step-note">KB: "The easiest way to add your CourtReserve calendar feed is to copy the link to your clipboard by selecting Copy Link."</div></div></div>
+          <div class="step" data-sid="step-22" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">This URL lets members subscribe in Google Calendar, Apple Calendar, or Outlook so the club's schedule auto-syncs to their personal calendar.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Enable Two-Factor Authentication</div>
+          <div class="step" data-sid="step-23" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>Organization Settings</code> row > click <code>Two-Factor Authentication</code>. Click to enable.</div><div class="step-note">KB: "This requires system users to verify their identity by entering a code sent to their email after successfully entering their login credentials."</div></div></div>
+          <div class="step" data-sid="step-24" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">A 6-digit code is sent to your admin email. Enter it to confirm activation. Log out and back in — the 2FA prompt will appear.</div></div></div>
+          <div class="step" data-sid="step-25" data-mid="mod-2"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">To disable later: return to the same page and enter another emailed verification code.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="module" id="m3" data-mid="mod-3">
+      <div class="mod-header" onclick="tog('m3')">
+        <div class="mod-check" data-mid="mod-3" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">3</div>
+        <div class="mod-info"><div class="mod-title">Module 3 — System Users</div><div class="mod-desc">Create Admin, Sub-Admin, and Event Coordinator accounts; compare role permissions</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m3">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m3">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/collections/9239456-creating-and-managing-system-users" target="_blank">Creating and Managing System Users (collection)</a>
+        </div>
+        <div class="task-section"><div class="task-label">Understand the 3 Role Types</div>
+          <div class="step" data-sid="step-26" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text"><strong>Admin</strong> — Full access to all settings, reports, billing, and features. Best for owners and senior managers.</div></div></div>
+          <div class="step" data-sid="step-27" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Sub-Admin</strong> — Customizable limited access. The specific permissions can be toggled per sub-admin. Best for front desk staff.</div></div></div>
+          <div class="step" data-sid="step-28" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Event Coordinator</strong> — Access limited to event management only. Best for program directors who don't need financial or court access.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create One of Each User Type</div>
+          <div class="step" data-sid="step-29" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>System Users</code> > click <code>Add User</code>.</div></div></div>
+          <div class="step" data-sid="step-30" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Create User 1 (Admin): test name and email, Role = <code>Admin</code>. Save.</div></div></div>
+          <div class="step" data-sid="step-31" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Create User 2 (Sub-Admin): different test name and email, Role = <code>Sub-Admin</code>. Explore the permissions checkboxes — note which features are individually togglable. Save.</div></div></div>
+          <div class="step" data-sid="step-32" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text">Create User 3 (Event Coordinator): another test name and email, Role = <code>Event Coordinator</code>. Save.</div></div></div>
+          <div class="step" data-sid="step-33" data-mid="mod-3"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">5</div><div class="step-body"><div class="step-text">Log out and log in as each user type. Navigate the admin panel and observe what each role can and cannot see. This is high-value prep — customers ask about permission differences on nearly every onboarding call.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="module" id="m4" data-mid="mod-4">
+      <div class="mod-header" onclick="tog('m4')">
+        <div class="mod-check" data-mid="mod-4" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">4</div>
+        <div class="mod-info"><div class="mod-title">Module 4 — Courts, Ball Machines &amp; Closures</div><div class="mod-desc">Build your full court structure: pickleball, tennis, combo courts, resources, and 2 closures</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m4">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m4">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/1146531-set-up-courts" target="_blank">Set Up Courts</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4360421-set-up-combo-courts" target="_blank">Set Up Combo Courts</a> ·
+          <a href="http://help.courtreserve.com/en/articles/3672807-create-and-manage-resources" target="_blank">Create and Manage Resources</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4444359-how-to-close-courts" target="_blank">How to Close Courts</a>
+        </div>
+        <div class="task-section"><div class="task-label">Create Pickleball &amp; Tennis Courts</div>
+          <div class="step" data-sid="step-34" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>COURT &amp; RESOURCE SETTINGS</code> heading > click <code>Courts</code> > <code>Create Court</code>.</div></div></div>
+          <div class="step" data-sid="step-35" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Create Pickleball Courts 1–4: Name = <code>Pickleball Court 1</code> (repeat for 2, 3, 4), Court Type = Pickleball, check <code>Is Visible on Member Portal?</code>. Save each.</div><div class="step-note">KB: "Full display name of the court. Short Name: abbreviated version used in condensed displays — if filled, CourtReserve displays this name on the Member Portal instead of the full name."</div></div></div>
+          <div class="step" data-sid="step-36" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Create Tennis Court 1 (Hard surface) and Tennis Court 2 (Clay surface). Create Conference Room (Court Type = Other, uncheck Member Portal visibility).</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create a Combo Court</div>
+          <div class="step" data-sid="step-37" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Edit Tennis Court 1. Scroll to the <code>Combo Court(s)</code> field. Select Pickleball Court 1 and Pickleball Court 2. Save.</div><div class="step-note">KB: "When any court in the combo group is booked, the system automatically reserves all connected courts." Admin sees a lock icon on linked courts when the combo is reserved.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Ball Machines (Resources)</div>
+          <div class="step" data-sid="step-38" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>COURT &amp; RESOURCE SETTINGS</code> > <code>Manage Resources</code> > <code>Create New</code>.</div><div class="step-note">KB: "A resource is any item a member can book in addition to — or instead of — a court, such as a ball machine, TV, projector, or other equipment."</div></div></div>
+          <div class="step" data-sid="step-39" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Select Resource Category = Ball Machine. Name = <code>Ball Machine 1</code>. Confirm <code>Is Active</code>. Save. Repeat for Ball Machine 2 and Ball Machine 3.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create 2 Closures</div>
+          <div class="step" data-sid="step-40" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Confirm closure types exist: <code>Settings</code> > <code>COURT &amp; RESOURCE SETTINGS</code> > <code>Closure Types</code>. Create Weather and Maintenance if missing.</div><div class="step-note">KB: "A closure type must be created and available to assign to closures."</div></div></div>
+          <div class="step" data-sid="step-41" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Go to <code>Closures</code> > <code>Create Closure</code>. Closure 1 (Weather): type = Weather, tomorrow 12–2pm, all pickleball courts, Cancellation Policy = <code>No Cancellations</code>. Confirm.</div><div class="step-note">KB: "No Cancellations — existing reservations will remain on the schedule. Use this if you only want to block new bookings without affecting current ones."</div></div></div>
+          <div class="step" data-sid="step-42" data-mid="mod-4"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Closure 2 (Recurring Maintenance): type = Maintenance, 7:00–8:00am, Recurrence = Weekly on Monday, all courts. Confirm.</div><div class="step-note">KB: "System users can create a recurring closure if the closure starts and finishes in one calendar day. It is not possible to create a recurring closure that starts on one day and finishes on another."</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 5 -->
+    <div class="module" id="m5" data-mid="mod-5">
+      <div class="mod-header" onclick="tog('m5')">
+        <div class="mod-check" data-mid="mod-5" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">5</div>
+        <div class="mod-info"><div class="mod-title">Module 5 — Custom Schedulers</div><div class="mod-desc">Create 3 schedulers: Pickleball, Tennis, Conference Rooms</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m5">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m5">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/3669990-custom-schedulers" target="_blank">Overview: Custom Schedulers</a>
+        </div>
+        <div class="task-section"><div class="task-label">Understand Custom Schedulers</div>
+          <div class="step" data-sid="step-43" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Custom Schedulers filter the default all-courts view to show only specific courts — and optionally only to specific membership types or member groups.</div><div class="step-note">KB: "Custom Schedulers are fully customizable booking calendars that use filters to control what is displayed and who can see it." Important: "The custom scheduler(s) must be built within your standard hours of operation."</div></div></div>
+          <div class="step" data-sid="step-44" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Navigate: <code>Settings</code> > <code>COURT &amp; BALL MACHINE SETTINGS</code> heading > click <code>Custom Schedulers</code> > <code>Create Custom Scheduler</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Scheduler 1 — Pickleball</div>
+          <div class="step" data-sid="step-45" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Scheduler name: <code>Pickleball</code>. Navigation name in Member Portal: <code>Book Pickleball</code>. Check the portal name checkbox.</div><div class="step-note">KB: "CourtReserve shows this name on the member portal if you enable this feature with the adjacent checkbox."</div></div></div>
+          <div class="step" data-sid="step-46" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Scheduler Type: <code>Expanded</code> (members pick their own court). Court Types: Pickleball. Courts: select Courts 1–4. Show on Member Portal: checked. Show on Admin Side: checked. Save.</div><div class="step-note">KB: "If you are not auto-assigning courts, choose Expanded."</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Scheduler 2 — Tennis &amp; Scheduler 3 — Conference Rooms</div>
+          <div class="step" data-sid="step-47" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Tennis: name = <code>Tennis</code>, portal name = <code>Book Tennis</code>, Type = Expanded, Courts = Tennis Court 1 &amp; 2. Show on portal and admin. Save.</div></div></div>
+          <div class="step" data-sid="step-48" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Conference Rooms: name = <code>Conference Rooms</code>, portal name = <code>Book a Room</code>, Type = Expanded, Courts = Conference Room. Show on portal and admin. Save.</div></div></div>
+          <div class="step" data-sid="step-49" data-mid="mod-5"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">View the member portal. You should now see Book Pickleball, Book Tennis, and Book a Room as three separate navigation options. Click each and confirm only the correct courts appear.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         WEEK 1 — RESERVATIONS, EVENTS & LESSONS
+    ══════════════════════════════════════ -->
+    <div class="phase-header">
+      <span class="phase-tag">WEEK 1</span>
+      <span class="phase-title">Reservations, Events &amp; Lessons</span>
+      <div class="phase-line"></div>
+    </div>
+
+    <!-- MODULE 6 -->
+    <div class="module" id="m6" data-mid="mod-6">
+      <div class="mod-header" onclick="tog('m6')">
+        <div class="mod-check" data-mid="mod-6" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">6</div>
+        <div class="mod-info"><div class="mod-title">Module 6 — Reservations &amp; Booking Settings</div><div class="mod-desc">Create 8 reservation types + configure booking settings, court opening times, and prime times</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m6">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m6">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/1358348-create-reservation-types" target="_blank">Create Reservation Types</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4799536-booking-settings-general" target="_blank">Booking Settings: General</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4474257-booking-settings-court-opening-times" target="_blank">Court Opening Times</a> ·
+          <a href="http://help.courtreserve.com/en/articles/5138725-booking-settings-prime-times" target="_blank">Prime Times</a>
+        </div>
+        <div class="task-section"><div class="task-label">Navigate to Reservation Types</div>
+          <div class="step" data-sid="step-50" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>RESERVATION SETTINGS</code> row > click <code>Reservation Types</code>. Click the green <code>Create Reservation Type</code> button.</div></div></div>
+          <div class="step" data-sid="step-51" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Key fields: <code>Min/Max Reservation Time in Minutes</code> (booking range), <code>Default Duration</code> (pre-filled when member books), <code>Duration Increment</code> (how much time added per click), <code>Min/Max Players</code> (headcount enforcement).</div><div class="step-note">KB example: Singles – Tennis with Min 30, Max 120, Default 60, Increment 30 means members can book from 30 min to 2 hrs in 30-min steps, pre-filled at 1 hour.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Pickleball Types</div>
+          <div class="step" data-sid="step-52" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text"><strong>Pickleball Singles:</strong> Assign to pickleball courts. Min/Max players = 2. Min 60, Max 120, Default 60, Increment 30. Guests: Yes ($10/hr).</div></div></div>
+          <div class="step" data-sid="step-53" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Pickleball Doubles:</strong> Min/Max players = 4–5. Min 90, Max 120, Default 90, Increment 30. Guests: Yes ($5/hr).</div></div></div>
+          <div class="step" data-sid="step-54" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Drilling:</strong> Min/Max players = 1–2. Min/Max/Default all 30 min (fixed-length). Guests: No.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Tennis, Pool &amp; Contract Types</div>
+          <div class="step" data-sid="step-55" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text"><strong>Tennis Singles:</strong> Tennis courts, 2 players, Min 30/Max 90/Default 60/Increment 30. Guests free.</div></div></div>
+          <div class="step" data-sid="step-56" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Tennis Doubles:</strong> Tennis courts, 4 players, Min 60/Max 150/Default 90/Increment 30. Guests free.</div></div></div>
+          <div class="step" data-sid="step-57" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Pool Reservation:</strong> Assign pool court, no player restrictions, Min 30/Max 180/Increment 30. Guests: No.</div></div></div>
+          <div class="step" data-sid="step-58" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text"><strong>Contract Time:</strong> No restrictions. Set <code>Allow Members to Book Online</code> to OFF — this becomes an admin-only reservation type.</div><div class="step-note">KB: "If disabled, users can see the scheduler but cannot book a court or resource." This is how to create admin-only reservation types.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Configure Court Opening Times</div>
+          <div class="step" data-sid="step-59" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BOOKING SETTINGS</code> heading > click <code>General</code>. Find <code>Time to Open Next Available Reservation Day</code>. Set to <code>9:15 AM</code>.</div><div class="step-note">KB: "If a Time to Open Next Available Reservation Day is set, the entirety of the latest day available for booking will open at the specified time, allowing for more structured and predictable reservation planning."</div></div></div>
+          <div class="step" data-sid="step-60" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Set <code>Time in Advance a Court Can Be Booked</code> to 14 days for your Gold membership type. Other types can have different limits.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Configure Prime Times</div>
+          <div class="step" data-sid="step-61" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BOOKING SETTINGS</code> > click <code>Prime Times</code>. Click the <code>+</code> icon next to Saturday. Set 9:00 AM – 12:00 PM.</div><div class="step-note">KB: "There is no Save button on this page. CourtReserve auto-saves any changes." Also: "Prime time settings manage access — they are not connected to pricing or custom cost settings."</div></div></div>
+          <div class="step" data-sid="step-62" data-mid="mod-6"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Go to <code>Booking Settings</code> > <code>Restrictions</code> to configure which membership types are blocked from booking during prime time hours.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 7 -->
+    <div class="module" id="m7" data-mid="mod-7">
+      <div class="mod-header" onclick="tog('m7')">
+        <div class="mod-check" data-mid="mod-7" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">7</div>
+        <div class="mod-info"><div class="mod-title">Module 7 — Events</div><div class="mod-desc">Build 3 specific events using the exact Create an Event workflow from KB</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m7">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m7">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/1146549-creating-events-recurring-events-camps-and-classes" target="_blank">Create an Event</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/319054-events" target="_blank">Events Article Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Before You Start — Prerequisites</div>
+          <div class="step" data-sid="step-63" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Confirm Event Categories exist: <code>Settings</code> > <code>RESERVATION SETTINGS</code> > <code>Event Categories</code>. Create if missing: Pickleball Classes, Cardio Tennis.</div><div class="step-note">KB: "Ensure that an appropriate event category exists. If not, a system user can create a new one to match the planned event."</div></div></div>
+          <div class="step" data-sid="step-64" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Navigate: left nav > <code>EVENTS</code> > <code>CREATE EVENT</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Event 1 — Pickleball Improvement Clinic</div>
+          <div class="step" data-sid="step-65" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Name: Pickleball Improvement Clinic. Category: Pickleball Classes. Max Registrants: 10.</div><div class="step-note">KB: "Once the maximum number of registrants has been reached, CourtReserve hides the signup buttons and creates the option to join the waitlist (if enabled)."</div></div></div>
+          <div class="step" data-sid="step-66" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Schedule: every weekday for 1 week, 7–8:30am, starting next Monday. Assign 2 pickleball courts.</div></div></div>
+          <div class="step" data-sid="step-67" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Registration: Full Registration Only, enable Waitlist. Cost: $125. Registration opens 3 weeks before start. Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Event 2 — Pickleball Intro (Monday Nights)</div>
+          <div class="step" data-sid="step-68" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Name: Pickleball Intro. Category: Pickleball Classes. Max: 15. Schedule: recurring every Monday, 7–9pm through end of year. Assign 3 pickleball courts.</div></div></div>
+          <div class="step" data-sid="step-69" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Registration: Drop-in only. Waitlist with auto-register, stops 2 hrs before event. Cost: $40. Sign up up to 14 days in advance. Enable admin notifications on registration. Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Event 3 — Women's Cardio Tennis</div>
+          <div class="step" data-sid="step-70" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Name: Women's Cardio Tennis. Category: Cardio Tennis. Max: 8. Schedule: recurring Tuesday 6–7pm through Thanksgiving. Assign 2 tennis courts.</div></div></div>
+          <div class="step" data-sid="step-71" data-mid="mod-7"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Registration: Drop-in only. Waitlist stops 24 hrs before. Sign up up to 7 days in advance. Gender restriction: Female only. Cost: $35 Individual / $40 Family. Guests at $50, max 3 per event, max 1 per member per date. Save.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 8 -->
+    <div class="module" id="m8" data-mid="mod-8">
+      <div class="mod-header" onclick="tog('m8')">
+        <div class="mod-check" data-mid="mod-8" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">8</div>
+        <div class="mod-info"><div class="mod-title">Module 8 — Lessons &amp; Instructors</div><div class="mod-desc">Create instructor types, lesson types, instructor profiles, pricing, and Book A Pro schedulers</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m8">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m8">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/3729691-add-instructors" target="_blank">Add Instructors</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4726778-create-lesson-types" target="_blank">Create Lesson Types</a> ·
+          <a href="http://help.courtreserve.com/en/articles/5520963-book-a-pro-setup" target="_blank">Book a Pro Setup</a>
+        </div>
+        <div class="task-section"><div class="task-label">Setup Order — Must Complete in This Order</div>
+          <div class="step" data-sid="step-72" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Navigate to <code>Settings</code> > <code>INSTRUCTOR SETTINGS</code> heading. You will see icons for: Instructor Types, Lesson Types, Instructors, Instructor Pricing, and Book a Pro Setup.</div><div class="step-note">KB: "Before adding an instructor, make sure the following are set up first: Instructor Types, Lesson Types, Event Categories, Instructor Availability."</div></div></div>
+          <div class="step" data-sid="step-73" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Click <code>Instructor Types</code> > <code>Create Instructor Type</code>. Create: "Tennis Pro" and "Pickleball Pro". Save each.</div></div></div>
+          <div class="step" data-sid="step-74" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Click <code>Lesson Types</code> > <code>Create Lesson Type</code>. Create: Private, Pro+2, Pro+3. Set Min/Max players and whether a court is required for each.</div><div class="step-note">KB: "A Lesson Type is a high-level tag that defines and categorizes lessons — including basic details, court settings, appearance, and financial settings."</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Instructors</div>
+          <div class="step" data-sid="step-75" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Instructors</code> icon > <code>Create Instructor</code>. Fill in: First Name, Last Name, Email (required). Check <code>Is Instructor?</code> to reveal instructor-specific fields.</div><div class="step-note">KB: "The Create Instructor feature lets system users build instructor profiles including availability, permissions, lesson/event types, and scheduling rules."</div></div></div>
+          <div class="step" data-sid="step-76" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Assign Instructor Type (e.g., Tennis Pro). Assign which Lesson Types they can teach. Save. Create at least 1 tennis pro and 1 pickleball pro.</div></div></div>
+          <div class="step" data-sid="step-77" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">For the second instructor, use <code>Copy Settings From Other Users</code> to duplicate the first profile, then modify only what's different — saves significant time.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Set Instructor Pricing &amp; Book A Pro</div>
+          <div class="step" data-sid="step-78" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Click <code>Instructor Pricing</code>. Set base lesson rate: $60/hour for both instructors. Set Pro+2 group rate: $35/person for 60 min.</div></div></div>
+          <div class="step" data-sid="step-79" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Click <code>Book a Pro Setup</code> > <code>Create Book a Pro Scheduler</code>. Select the instructor, lesson types, available times, and courts. Save.</div><div class="step-note">KB: "The Book a Pro feature allows members to book their own lessons without admin involvement." Prerequisites (Lesson Types, Instructor Types, Instructors, Pricing) must all be complete first.</div></div></div>
+          <div class="step" data-sid="step-80" data-mid="mod-8"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Create one Book a Pro scheduler per instructor. View the member portal to confirm the "Book a Pro" section appears with each instructor's availability.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         WEEK 1 — PORTAL & MEMBERS
+    ══════════════════════════════════════ -->
+    <div class="phase-header">
+      <span class="phase-tag">WEEK 1</span>
+      <span class="phase-title">Member Portal, Player Sign-Up &amp; Member Management</span>
+      <div class="phase-line"></div>
+    </div>
+
+    <!-- MODULE 9 -->
+    <div class="module" id="m9" data-mid="mod-9">
+      <div class="mod-header" onclick="tog('m9')">
+        <div class="mod-check" data-mid="mod-9" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">9</div>
+        <div class="mod-info"><div class="mod-title">Module 9 — Member Portal Setup</div><div class="mod-desc">Build a fully branded portal: logo, home page, navigation, news tab, drop-down menus</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m9">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m9">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/4805777-overview-portal-settings" target="_blank">Overview: Portal Settings</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/319041-member-portal" target="_blank">Member Portal Article Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Portal Access &amp; Basic Configuration</div>
+          <div class="step" data-sid="step-81" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>PORTAL SETTINGS</code> row > click the <code>Setup</code> icon. Find your <code>Portal Link</code> — copy it and save it. This is the direct URL to your club's member-facing site.</div><div class="step-note">KB: "Access and share your Portal Link so players can easily find your club online. Control whether players can create their own accounts online or if accounts must be created by admins."</div></div></div>
+          <div class="step" data-sid="step-82" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Confirm <code>Member Portal</code> is turned ON. Set new member approval to either Auto-Approve or Require Admin Approval. Ask your Team Lead which to use for demo purposes.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Upload Logo &amp; Build Home Page</div>
+          <div class="step" data-sid="step-83" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Click the <code>Logo</code> icon. Upload your org logo (recommended: 300px wide, transparent PNG).</div></div></div>
+          <div class="step" data-sid="step-84" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Find <code>Home Page Rows</code> or <code>Content</code>. Add a hero/banner image at the top. Add at least 2 content rows below (text block, events list, or button row).</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Navigation, News Tab &amp; Verify</div>
+          <div class="step" data-sid="step-85" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Add at least one header nav link (e.g., "Contact Us" pointing to an email or external URL). Create a News tab with one post: title, body, publish date.</div></div></div>
+          <div class="step" data-sid="step-86" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Create a drop-down nav menu grouping your event categories under one label (e.g., "Events" drops to show Pickleball Classes, Cardio Tennis).</div></div></div>
+          <div class="step" data-sid="step-87" data-mid="mod-9"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Click <code>View Member Portal</code>. Preview logged in, then log out and view as an anonymous visitor. Confirm what's public vs. login-required.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 10 -->
+    <div class="module" id="m10" data-mid="mod-10">
+      <div class="mod-header" onclick="tog('m10')">
+        <div class="mod-check" data-mid="mod-10" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">10</div>
+        <div class="mod-info"><div class="mod-title">Module 10 — Getting Players Into CourtReserve</div><div class="mod-desc">Member import process, sign-up form setup, and manual member add</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m10">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m10">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/4051118-member-list-import" target="_blank">Member List Import: Setup and Template</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/5815787-setting-up-the-sign-up-form" target="_blank">Portal Settings: Sign-Up Form</a>
+        </div>
+        <div class="task-section"><div class="task-label">Method 1 — Member Import (Know the Rules)</div>
+          <div class="step" data-sid="step-88" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Read the Member List Import KB article. Download the Excel template. Memorize the import rules.</div><div class="step-note">KB: "Each organization is allowed a single member import. Any members already in your organization will not be imported — the process is strictly for new players. We cannot import Events, Reservations, or historical financial data."</div></div></div>
+          <div class="step" data-sid="step-89" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Required fields: <code>First Name</code>, <code>Last Name</code>, <code>Email</code>. Template has two tabs: Individual Memberships and Family Memberships — they are separate sheets. Membership names must exactly match what's in CourtReserve.</div></div></div>
+          <div class="step" data-sid="step-90" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Process: (1) Fill template → (2) Submit 3–5 row test to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="90e3e5e0e0ffe2e4d0f3ffe5e2e4e2f5e3f5e2e6f5bef3fffd">[email&#160;protected]</a> → (3) Incorporate feedback → (4) Submit full file. The CR Import Team handles all actual imports — admins cannot self-import.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Method 2 — Sign-Up Form</div>
+          <div class="step" data-sid="step-91" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>PORTAL SETTINGS</code> row > click <code>Sign-Up Form</code>.</div><div class="step-note">KB: "The Required Fields section is fixed — every sign-up form must collect the player's name and email address."</div></div></div>
+          <div class="step" data-sid="step-92" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Enable optional fields: Address and Phone Number as required, Date of Birth as optional. Add custom instructions text. Save.</div><div class="step-note">KB on membership visibility: "Required — players must select a membership. Optional — players may choose to join a membership but it is not required."</div></div></div>
+          <div class="step" data-sid="step-93" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Test by navigating to your Portal Link and registering as a brand new member. Confirm the form fields and flow work correctly.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Method 3 — Manual Member Add</div>
+          <div class="step" data-sid="step-94" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Left nav > <code>MEMBERS</code> > <code>Add Member</code>. Fill in First Name, Last Name, Email, Membership Type. Save.</div></div></div>
+          <div class="step" data-sid="step-95" data-mid="mod-10"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Click the member's name to open their full profile. Explore every tab: Billing, Reservations, Events, Memberships, Ratings, Packages.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         WEEK 2 — FINANCIAL FEATURES
+    ══════════════════════════════════════ -->
+    <div class="phase-header">
+      <span class="phase-tag">WEEK 2</span>
+      <span class="phase-title">Financial Features</span>
+      <div class="phase-line"></div>
+    </div>
+
+    <!-- MODULE 11 -->
+    <div class="module" id="m11" data-mid="mod-11">
+      <div class="mod-header" onclick="tog('m11')">
+        <div class="mod-check" data-mid="mod-11" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">11</div>
+        <div class="mod-info"><div class="mod-title">Module 11 — Integrated Payments (SafeSave)</div><div class="mod-desc">Connect SafeSave test keys, add a test credit card, and understand convenience fees</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m11">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m11">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/4388018-integrated-payments-set-up-safesave" target="_blank">Integrated Payments: Set up SafeSave</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/7172928-convenience-fees" target="_blank">Convenience Fees</a>
+        </div>
+        <div class="task-section"><div class="task-label">Enter Sandbox Test Keys</div>
+          <div class="step" data-sid="step-96" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> heading > click <code>Integrated Payments</code>. Select <code>SafeSave</code>.</div><div class="step-note">KB: "Once your SafeSave account is active, you'll receive an email with a link to set your password. Two keys are required: a Private Security Key and a Public Security Key, both generated from Options > Settings > Security Keys in SafeSave."</div></div></div>
+          <div class="step" data-sid="step-97" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Sandbox Private Key: <code>mdSkh83deMDDD8Dgg7q364M72CCTM3B8</code></div></div></div>
+          <div class="step" data-sid="step-98" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Sandbox Public Key: <code>f98P2d-BCU5Gx-dV9sy8-EVu3RJ</code>. Click <code>Save</code>.</div></div></div>
+          <div class="step" data-sid="step-99" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text">Go to a test member's profile > Billing tab > <code>Add Payment Method</code>. Enter test CC: <code>4111-1111-1111-1111</code>, Exp <code>11/60</code>, CVC <code>888</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Understand Convenience Fees</div>
+          <div class="step" data-sid="step-100" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Convenience fees are percentage-based surcharges on online (non-card-present) transactions. Cannot exceed 4%. Do not apply to: CC swipe, eCheck, pre-authorized debit, cash, check.</div><div class="step-note">KB: "Convenience fees are not allowed in all jurisdictions. You are responsible for ensuring compliance before using this feature. It is recommended to provide customers 30 days advance notice before applying them."</div></div></div>
+          <div class="step" data-sid="step-101" data-mid="mod-11"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">To enable: <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Integrated Payments</code>. The convenience fee setting appears after payment integration is connected.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 12 -->
+    <div class="module" id="m12" data-mid="mod-12">
+      <div class="mod-header" onclick="tog('m12')">
+        <div class="mod-check" data-mid="mod-12" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">12</div>
+        <div class="mod-info"><div class="mod-title">Module 12 — Financial Settings &amp; Fees</div><div class="mod-desc">Taxes, revenue categories, credits, misc fees, recurring fees, refunds, court costs</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m12">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m12">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/collections/9237025-tax-rates" target="_blank">Tax Rates</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/5820330-create-revenue-categories" target="_blank">Revenue Categories</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/4755690-applying-credits-and-misc-fees" target="_blank">Credits &amp; Misc Fees</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/9237027-refunding" target="_blank">Refunding Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Tax Rates &amp; Revenue Categories</div>
+          <div class="step" data-sid="step-102" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Tax Rates</code> > <code>Create Tax Rate</code>. Name: "Sales Tax", Rate: 7%. Save.</div></div></div>
+          <div class="step" data-sid="step-103" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Go to <code>Revenue Categories</code> > <code>Create Revenue Category</code>. Create: "Court Revenue" and "Membership Revenue". Save each.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Credits, Misc Fees &amp; Recurring Fees</div>
+          <div class="step" data-sid="step-104" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Navigate to a test member's profile > Billing tab. Click <code>Add Misc Fee</code>. Enter $5, add a description note. Save.</div></div></div>
+          <div class="step" data-sid="step-105" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">On a second test member's profile, click <code>Add Credit</code>. Enter $10, add a note. Save. The credit posts to their house ac-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Recurring Fees</code>. Create a test recurring fee: $5/month "locker fee" for Gold Members. Assign to the membership type. Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Practice Issuing Refunds</div>
+          <div class="step" data-sid="step-106" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Make a test transaction: apply a $10 misc fee to a member and collect payment via the test credit card.</div></div></div>
+          <div class="step" data-sid="step-107" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Navigate to the transaction. Process a full refund. Then practice a partial refund. Explore: refund to CC vs. refund to account credit.</div></div></div>
+          <div class="step" data-sid="step-108" data-mid="mod-12"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Read the full Refunding article collection to understand all refund types before your first customer call.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 13 -->
+    <div class="module" id="m13" data-mid="mod-13">
+      <div class="mod-header" onclick="tog('m13')">
+        <div class="mod-check" data-mid="mod-13" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">13</div>
+        <div class="mod-info"><div class="mod-title">Module 13 — Financial Reporting</div><div class="mod-desc">Run every financial report with at least 2 filter combinations each; export one</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m13">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m13">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/collections/2255235-financial-reporting" target="_blank">Financial Reporting Article Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">How to Approach Financial Reports</div>
+          <div class="step" data-sid="step-109" data-mid="mod-13"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">In the left nav, click <code>TRANSACTIONS</code>. All financial reports live here. The separate <code>REPORTS</code> section in the left nav is for non-financial reports only (attendance, members, reservations, etc.) — do not confuse the two.</div></div></div>
+          <div class="step" data-sid="step-110" data-mid="mod-13"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">For every report, ask: <strong>What data does this show?</strong> <strong>What filters are available?</strong> <strong>When would a real admin use this?</strong> Run each with at least 2 different filter combinations.</div></div></div>
+          <div class="step" data-sid="step-111" data-mid="mod-13"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Export one report to CSV or PDF to understand the export workflow. Watch the video tutorial linked from each report's KB article.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 14 -->
+    <div class="module" id="m14" data-mid="mod-14">
+      <div class="mod-header" onclick="tog('m14')">
+        <div class="mod-check" data-mid="mod-14" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">14</div>
+        <div class="mod-info"><div class="mod-title">Module 14 — Point of Sale (POS)</div><div class="mod-desc">Enable POS, create item categories and 10 items, process 3 types of transactions</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m14">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m14">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/5756429-set-up-point-of-sale" target="_blank">Set Up Point of Sale</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/2300284-point-of-sale-inventory-management" target="_blank">POS &amp; Inventory Management Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Enable POS</div>
+          <div class="step" data-sid="step-112" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>ADDITIONAL FEATURES</code> row > <code>Additional Features</code> icon > scroll to <code>Financial Features</code> > <code>Point of Sale</code>. Check the box > <code>I Agree</code> > click <code>Setup</code>.</div><div class="step-note">KB: "Use this feature to track sales from the front desk, pro shop, restaurant, and more." CourtReserve also adds a POINT OF SALE link to the left nav sidebar.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create Categories &amp; Items</div>
+          <div class="step" data-sid="step-113" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>POS Item Categories</code>. Create 5 categories: Drinks, Snacks, Apparel, Equipment, Gift Cards.</div></div></div>
+          <div class="step" data-sid="step-114" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Go to <code>Items</code>. Click <code>Create Item</code>. Create 10 items spread across your categories (name, price, category each). Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Process 3 Test Transactions</div>
+          <div class="step" data-sid="step-115" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Left nav > <code>POINT OF SALE</code>. Add items to cart. Checkout via <code>Cash</code> — enter amount tendered. Complete.</div></div></div>
+          <div class="step" data-sid="step-116" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">New transaction. Add items. Checkout via <code>Charge to House Account</code> — search for a test member. Charge posts to their account balance.</div></div></div>
+          <div class="step" data-sid="step-117" data-mid="mod-14"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">New transaction. Add an item. Click the item and apply a discount (dollar amount or percentage). Complete the sale.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 15 -->
+    <div class="module" id="m15" data-mid="mod-15">
+      <div class="mod-header" onclick="tog('m15')">
+        <div class="mod-check" data-mid="mod-15" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">15</div>
+        <div class="mod-info"><div class="mod-title">Module 15 — Batch Billing &amp; Invoicing</div><div class="mod-desc">Enable Batch Billing, configure invoice settings, run a bulk batch, generate an individual invoice</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m15">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m15">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/8293835-enable-batch-billing" target="_blank">Enable Batch Billing</a> ·
+          <a href="http://help.courtreserve.com/en/articles/4474581-batch-billing-and-invoicing" target="_blank">Batch Billing and Invoicing</a> ·
+          <a href="http://help.courtreserve.com/en/articles/8296352-batch-billing-generating-an-invoice-for-individual-member" target="_blank">Invoice for Individual Member</a>
+        </div>
+        <div class="task-section"><div class="task-label">Enable Batch Billing</div>
+          <div class="step" data-sid="step-118" data-mid="mod-15"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>ADDITIONAL FEATURES</code> > <code>Additional Features</code> icon > scroll to <code>Batch Billing &amp; Invoicing</code>. Check box > <code>I Agree</code> > click <code>Setup</code>.</div><div class="step-note">KB: "System users save time by generating multiple invoices from a single dashboard page."</div></div></div>
+          <div class="step" data-sid="step-119" data-mid="mod-15"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Invoice Settings tab opens. Fill in: club name/address/phone, optional Memo, Next Invoice Number (starting number), Invoice Due Days (how many days to pay). Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Run a Bulk Batch &amp; Individual Invoice</div>
+          <div class="step" data-sid="step-120" data-mid="mod-15"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Left nav > <code>BATCH BILLING</code>. Select a membership type. Click <code>Generate Invoices</code>. Invoices are created for all eligible members.</div></div></div>
+          <div class="step" data-sid="step-121" data-mid="mod-15"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Navigate to a specific member's profile > Billing or Invoices tab. Click <code>Generate Invoice</code> for that individual. Set amount and due date. Confirm it appears on their account.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 16 -->
+    <div class="module" id="m16" data-mid="mod-16">
+      <div class="mod-header" onclick="tog('m16')">
+        <div class="mod-check" data-mid="mod-16" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">16</div>
+        <div class="mod-info"><div class="mod-title">Module 16 — Packages (Virtual Punch Cards)</div><div class="mod-desc">Enable Packages, create 3 packages, sell them, and redeem from admin side and member portal</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m16">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m16">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/6645470-create-packages" target="_blank">Create Packages</a> ·
+          <a href="http://help.courtreserve.com/en/articles/8180235-redeem-a-package" target="_blank">Redeem a Package</a> ·
+          <a href="http://help.courtreserve.com/en/articles/8180238-selling-packages-on-the-admin-panel" target="_blank">Selling Packages on Admin Panel</a>
+        </div>
+        <div class="task-section"><div class="task-label">Enable Packages &amp; Create Categories</div>
+          <div class="step" data-sid="step-122" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>ADDITIONAL FEATURES</code> > <code>Additional Features</code> icon. Scroll to <code>Packages</code>. Check box > <code>I Agree</code> > <code>Setup</code>.</div><div class="step-note">KB: "A package is a flexible bundle that allows members to redeem credits — or 'punches' — toward court time, single events, and/or lessons."</div></div></div>
+          <div class="step" data-sid="step-123" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>BILLING SETTINGS</code> > <code>Package Categories</code>. Create: Combined, Lessons, Court Time.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create 3 Packages</div>
+          <div class="step" data-sid="step-124" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text"><strong>Court + Lesson + Event 20 Pack ($300):</strong> 20 punches. Category: Combined. Courts: 1 punch/60min, 1.5/90, 2/120. Non-private lessons: same. Private lessons: 2/60, 3/90, 4/120. Events: 1 per registration.</div></div></div>
+          <div class="step" data-sid="step-125" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Lesson Starter 10 Pack ($170):</strong> 10 punches. Category: Lessons. All lessons: 1/60, 1.5/90, 2/120.</div></div></div>
+          <div class="step" data-sid="step-126" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Court Time 10 Pack ($200):</strong> 10 punches. Category: Court Time. All courts: 1/60, 1.5/90, 2/120.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Sell &amp; Redeem Packages</div>
+          <div class="step" data-sid="step-127" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Sell each package to a different test member: member profile > Packages tab > <code>Add Package</code> > select package > process payment via test CC. Confirm punches appear.</div></div></div>
+          <div class="step" data-sid="step-128" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Admin redemption: book a court for a package-holding member. At payment, select <code>Pay with Package</code>. Confirm punches deducted.</div></div></div>
+          <div class="step" data-sid="step-129" data-mid="mod-16"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Member portal redemption: log in as a member with a package. Book a court or event. At checkout, select package as payment. Confirm punches deducted.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         WEEK 2 — PREMIUM FEATURES
+    ══════════════════════════════════════ -->
+    <div class="phase-header">
+      <span class="phase-tag">WEEK 2</span>
+      <span class="phase-title">Premium Features, Notifications &amp; Reporting</span>
+      <div class="phase-line"></div>
+    </div>
+
+    <!-- MODULE 17 -->
+    <div class="module" id="m17" data-mid="mod-17">
+      <div class="mod-header" onclick="tog('m17')">
+        <div class="mod-check" data-mid="mod-17" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">17</div>
+        <div class="mod-info"><div class="mod-title">Module 17 — Waivers</div><div class="mod-desc">Enable Waivers, create a liability waiver, add a signing rule, verify it triggers on booking</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m17">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m17">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="http://help.courtreserve.com/en/articles/8427043-create-a-waiver" target="_blank">Create a Waiver</a> ·
+          <a href="http://help.courtreserve.com/en/articles/8427038-create-a-signing-rule" target="_blank">Create a Signing Rule</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/3194061-waivers-membership-agreements" target="_blank">Waivers &amp; Membership Agreements Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Enable &amp; Create the Waiver</div>
+          <div class="step" data-sid="step-130" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Enable: <code>Settings</code> > <code>ADDITIONAL FEATURES</code> > <code>Additional Features</code> > find <code>Waivers &amp; Agreements</code>. Check box > <code>I Agree</code> > <code>Setup</code>.</div></div></div>
+          <div class="step" data-sid="step-131" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Navigate to <code>Waivers &amp; Agreements</code> icon > <code>Waivers &amp; Agreements</code> tab > <code>Create Waiver / Agreement</code>.</div><div class="step-note">KB: "After creating a waiver, the system user must create a signing rule." A waiver without a signing rule will never be triggered — both steps are required.</div></div></div>
+          <div class="step" data-sid="step-132" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Fill in: Name = "Liability Waiver". Version Name = leave as auto-filled. Agreement text = write your waiver body. Click <code>Save</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create a Signing Rule &amp; Verify</div>
+          <div class="step" data-sid="step-133" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Click the <code>Signing Rules</code> tab > <code>Create Signing Rule</code>. Select your waiver. Set trigger: "Must sign before first reservation." Save.</div></div></div>
+          <div class="step" data-sid="step-134" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Log in to the member portal as a test member. Attempt a court reservation. The waiver prompt should appear and must be accepted before booking completes.</div></div></div>
+          <div class="step" data-sid="step-135" data-mid="mod-17"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">After signing: go to <code>Reports</code> > <code>Waivers Report</code>. Confirm the signed waiver appears with the member's name, date, and version.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 18 -->
+    <div class="module" id="m18" data-mid="mod-18">
+      <div class="mod-header" onclick="tog('m18')">
+        <div class="mod-check" data-mid="mod-18" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">18</div>
+        <div class="mod-info"><div class="mod-title">Module 18 — Notifications</div><div class="mod-desc">Enable Push Notifications, configure text alerts, and create a Global Announcement</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m18">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m18">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/7250851-push-notifications" target="_blank">Push Notifications</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/3925783-publish-global-announcements" target="_blank">Publish Global Announcements</a>
+        </div>
+        <div class="task-section"><div class="task-label">Important — Talk to Your Team Lead First</div>
+          <div class="step" data-sid="step-136" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Before configuring notifications, ask your Team Lead to walk you through the difference between <strong>Automated notifications</strong> (system-triggered: reservation confirmations, cancellation emails) and <strong>Marketing notifications</strong> (admin sends manually: bulk emails, announcements). These live in different areas of the platform.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Enable Push Notifications</div>
+          <div class="step" data-sid="step-137" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>ADDITIONAL FEATURES</code> > <code>Additional Features</code> > scroll to <code>Premium Features</code> > <code>Push Notification Alerts</code>. Check box > <code>I Agree</code>. Click <code>Setup</code>.</div><div class="step-note">KB: "Push Notifications allow players and members to receive real-time updates across three channels: email, text message, and mobile app push alerts."</div></div></div>
+          <div class="step" data-sid="step-138" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">The Notification Preferences Setup screen opens. Three tabs: <code>Player</code>, <code>System User</code>, <code>Push</code>. Enable one player notification (e.g., Reservation Confirmation). Make a test reservation and verify the notification fires.</div></div></div>
+          <div class="step" data-sid="step-139" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">On the Push tab, enable push notifications for a relevant event type. Open the CourtReserve app. Trigger the action. Verify the push notification appears on your phone.</div><div class="step-note">KB: "The first time a player opens the CourtReserve mobile app, they'll be prompted to allow push notifications." Make sure you've accepted this.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create a Global Announcement</div>
+          <div class="step" data-sid="step-140" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>ORGANIZATION SETTINGS</code> row > click <code>Global Announcements</code> > <code>Create Global Announcement</code>.</div></div></div>
+          <div class="step" data-sid="step-141" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Fill in: Title, Active From/Until dates. Check <code>Include on Welcome Page</code>.</div><div class="step-note">KB: "In order to have the Announcements section display on the CourtReserve mobile app, the Include on Welcome page option must be selected."</div></div></div>
+          <div class="step" data-sid="step-142" data-mid="mod-18"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Write body text. Click <code>Save</code>. Log in to the member portal and mobile app to verify the announcement appears in both places.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 19 -->
+    <div class="module" id="m19" data-mid="mod-19">
+      <div class="mod-header" onclick="tog('m19')">
+        <div class="mod-check" data-mid="mod-19" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">19</div>
+        <div class="mod-info"><div class="mod-title">Module 19 — Essential Additional Features</div><div class="mod-desc">Enable and explore: Player Match-Maker, Check-In Kiosk, Attendance Tracker, Waitlists, Profile Pictures, File Repository</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m19">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m19">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/6672563-player-match-making" target="_blank">Player Match-Maker</a> ·
+          <a href="https://intercom.help/courtreserve/en/collections/9239416-self-check-in-kiosks-and-check-in-statuses" target="_blank">Check-In Kiosk Collection</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/7150729-membership-waitlisting" target="_blank">Membership Waitlist</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/7235129-court-waitlisting" target="_blank">Court Waitlist</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/5572341-add-files-to-the-repository" target="_blank">File Repository</a>
+        </div>
+        <div class="task-section"><div class="task-label">How to Enable Any Additional Feature</div>
+          <div class="step" data-sid="step-143" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">All Additional Features follow the same path: <code>Settings</code> > <code>ADDITIONAL FEATURES</code> row > <code>Additional Features</code> icon. Scroll to find the feature, check its box, agree to terms, then click <code>Setup</code>.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Player Match-Maker, Check-In Kiosk &amp; Attendance</div>
+          <div class="step" data-sid="step-144" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Enable <code>Player Match-Maker</code>. In the sandbox, post yourself as available as a test member. Log in as a second member and request to join. Verify the match-up flow.</div></div></div>
+          <div class="step" data-sid="step-145" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Enable <code>Check-In Kiosk</code> and <code>Attendance Tracker</code>. Launch the kiosk view. Explore how members check in to a reservation. Note how it differs from the standard admin scheduler view.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Waitlists, Profile Pictures &amp; File Repository</div>
+          <div class="step" data-sid="step-146" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Enable <code>Membership Waitlist</code>. Go to a membership type and enable its waitlist with a capacity limit. Enable <code>Court Waitlist</code>. Fill a court's time slot with a test reservation, then book again as a second member — confirm you're placed on the waitlist.</div></div></div>
+          <div class="step" data-sid="step-147" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Enable <code>Profile Pictures</code>. Upload a photo as a test member from the portal. Verify it appears on their admin profile and member list.</div></div></div>
+          <div class="step" data-sid="step-148" data-mid="mod-19"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Enable <code>File Repository</code>. Upload a test file (e.g., a PDF). Verify it appears on the member portal under Files/Documents.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 20 -->
+    <div class="module" id="m20" data-mid="mod-20">
+      <div class="mod-header" onclick="tog('m20')">
+        <div class="mod-check" data-mid="mod-20" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">20</div>
+        <div class="mod-info"><div class="mod-title">Module 20 — Custom Ratings</div><div class="mod-desc">Create 4 rating types, assign to members, and test event restriction logic</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m20">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m20">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/4147287-custom-ratings" target="_blank">Set Up Custom Ratings</a>
+        </div>
+        <div class="task-section"><div class="task-label">Create All 4 Rating Types</div>
+          <div class="step" data-sid="step-149" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>MEMBER SETTINGS</code> heading > click <code>Custom Ratings</code> > <code>Create Rating Category</code>.</div><div class="step-note">KB: "Set up custom ratings to control event access based on player skill level, create member groups, or easily view a member's rating within their profile."</div></div></div>
+          <div class="step" data-sid="step-150" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Pickleball Rating:</strong> Type = Dropdown. Values = 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0. Check Display on Members Grid. Allow portal edit. Save.</div></div></div>
+          <div class="step" data-sid="step-151" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Pickleball Level:</strong> Type = Dropdown. Values = Beginner, Intermediate, Advanced. Display on grid. Allow portal edit. Save.</div></div></div>
+          <div class="step" data-sid="step-152" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text"><strong>USTA Rating:</strong> Type = Dropdown. Values = 1.0 through 7.0 in .5 increments. Display on grid. Allow portal edit. Save.</div></div></div>
+          <div class="step" data-sid="step-153" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">5</div><div class="step-body"><div class="step-text"><strong>Tennis Stroke Mastery:</strong> Type = Multi-Select. Values = Serve, Forehand Groundstroke, Backhand Groundstroke, Forehand Volley, Backhand Volley, Overhead Smash. Allow portal edit. Save.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Assign Ratings &amp; Test Event Restrictions</div>
+          <div class="step" data-sid="step-154" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to each test member's profile > Ratings tab. Assign ratings to at least 3 members. Give yourself a 3.5 Pickleball Rating and another member a 2.5.</div></div></div>
+          <div class="step" data-sid="step-155" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Create a test event with a rating restriction: <code>Events</code> > <code>Create Event</code>. In Restrictions, set Minimum Pickleball Rating = 3.5. Save.</div></div></div>
+          <div class="step" data-sid="step-156" data-mid="mod-20"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Log in as yourself (3.5 rating) — registration should succeed. Log in as the 2.5 member — registration should be blocked. Confirm the error message appears.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 21 -->
+    <div class="module" id="m21" data-mid="mod-21">
+      <div class="mod-header" onclick="tog('m21')">
+        <div class="mod-check" data-mid="mod-21" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">21</div>
+        <div class="mod-info"><div class="mod-title">Module 21 — Member Groups &amp; Player Directory</div><div class="mod-desc">Create a player directory, 1 static group, and 1 dynamic group</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m21">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m21">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/collections/9225330-managing-member-groups-and-player-directories" target="_blank">Member Groups &amp; Player Directory Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Create a Player Directory</div>
+          <div class="step" data-sid="step-157" data-mid="mod-21"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>MEMBER SETTINGS</code> > <code>Player Directory</code> > <code>Create Player Directory</code>. Name: "Pickleball Directory". Configure visible fields (name, phone, Pickleball Rating). Set which membership types can see it. Save.</div></div></div>
+          <div class="step" data-sid="step-158" data-mid="mod-21"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">View from the member portal and confirm it populates with your test members.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Static Group &amp; Dynamic Group</div>
+          <div class="step" data-sid="step-159" data-mid="mod-21"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Go to <code>Settings</code> > <code>MEMBER SETTINGS</code> > <code>Member Groups</code> > <code>Create Group</code>. Name: "VIP Members". Type: <code>Static</code>. Save. Manually add 3 test members by searching and clicking Add.</div></div></div>
+          <div class="step" data-sid="step-160" data-mid="mod-21"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Create another group: Name = "All Gold Members". Type: <code>Dynamic</code>. Rule: Membership Type = Gold Member. Save. System auto-populates — no manual curation needed.</div></div></div>
+          <div class="step" data-sid="step-161" data-mid="mod-21"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Static groups are used for targeted communications and manual curation. Dynamic groups auto-update based on membership, rating, or other rules — they stay current without any admin effort.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 22 -->
+    <div class="module" id="m22" data-mid="mod-22">
+      <div class="mod-header" onclick="tog('m22')">
+        <div class="mod-check" data-mid="mod-22" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">22</div>
+        <div class="mod-info"><div class="mod-title">Module 22 — Audit Log</div><div class="mod-desc">Navigate, filter, and interpret the Audit Log using every filter option</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m22">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m22">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/4230669-audit-log" target="_blank">Audit Log and Notifications</a>
+        </div>
+        <div class="task-section"><div class="task-label">Navigate &amp; Filter the Audit Log</div>
+          <div class="step" data-sid="step-162" data-mid="mod-22"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Left nav > <code>AUDITS</code> > <code>AUDIT LOG</code>.</div><div class="step-note">KB: "By default, all admin users have access. Sub-admins can view it only if granted the appropriate permission."</div></div></div>
+          <div class="step" data-sid="step-163" data-mid="mod-22"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><code>Action Type</code>: filter by Create, Edit, Cancel, etc. Default = ALL. <code>Entity Type</code>: filter by Reservations, Events, Memberships, Closures, etc.</div><div class="step-note">KB: "For Entity Type = Report, audit log data is retained for one year. Any entry older than one year is automatically purged."</div></div></div>
+          <div class="step" data-sid="step-164" data-mid="mod-22"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">Set <code>Action Start and End Dates</code> to narrow results. Use <code>Show Actions Created By Admins/Sub-Admins</code> to filter by who made changes.</div></div></div>
+          <div class="step" data-sid="step-165" data-mid="mod-22"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text">Practice: filter by Entity Type = Reservation Types. Find the log entry for when you created Pickleball Singles. Note: who created it, when, and what changed.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 23 -->
+    <div class="module" id="m23" data-mid="mod-23">
+      <div class="mod-header" onclick="tog('m23')">
+        <div class="mod-check" data-mid="mod-23" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">23</div>
+        <div class="mod-info"><div class="mod-title">Module 23 — Non-Financial Reports</div><div class="mod-desc">Run all 15 non-financial reports; understand what each one shows and when to use it</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m23">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m23">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/collections/2472778-reports" target="_blank">Non-Financial Reporting Collection</a>
+        </div>
+        <div class="task-section"><div class="task-label">Run Each Report</div>
+          <div class="step" data-sid="step-166" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text"><strong>Reservations Report</strong> — all court bookings by date range. Use for court utilization analysis and exporting booking records.</div></div></div>
+          <div class="step" data-sid="step-167" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Members Report</strong> — full member list filtered by type, status, or join date. Use for marketing and communications exports.</div></div></div>
+          <div class="step" data-sid="step-168" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Memberships Report</strong> — active memberships breakdown. Use for seeing how many members are on each plan.</div></div></div>
+          <div class="step" data-sid="step-169" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text"><strong>Membership Status Report</strong> — current status (Active, Expired, Canceled) of all membership types across all members.</div></div></div>
+          <div class="step" data-sid="step-170" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">5</div><div class="step-body"><div class="step-text"><strong>Membership Waitlist Report</strong> — who is waiting for which membership type.</div></div></div>
+          <div class="step" data-sid="step-171" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">6</div><div class="step-body"><div class="step-text"><strong>Events Report</strong> — registrations, capacity, and revenue per event. Filter by category, date range, or instructor.</div></div></div>
+          <div class="step" data-sid="step-172" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">7</div><div class="step-body"><div class="step-text"><strong>Leagues Report</strong> — league participation and standings (available only if Leagues is enabled).</div></div></div>
+          <div class="step" data-sid="step-173" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">8</div><div class="step-body"><div class="step-text"><strong>Court Sheet</strong> — printable day-view of all reservations. Used by front desk staff daily.</div></div></div>
+          <div class="step" data-sid="step-174" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">9</div><div class="step-body"><div class="step-text"><strong>Court Utilization Report</strong> — percentage of court time used vs. available. Critical for pricing and capacity planning decisions.</div></div></div>
+          <div class="step" data-sid="step-175" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">10</div><div class="step-body"><div class="step-text"><strong>Instructor Time Report</strong> — lesson hours per instructor. Used to calculate instructor pay.</div></div></div>
+          <div class="step" data-sid="step-176" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">11</div><div class="step-body"><div class="step-text"><strong>Guests Report</strong> — how many guests members have brought, when, and for which activity.</div></div></div>
+          <div class="step" data-sid="step-177" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">12</div><div class="step-body"><div class="step-text"><strong>Attendance Report</strong> — who attended events with check-in timestamps (if check-in is enabled).</div></div></div>
+          <div class="step" data-sid="step-178" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">13</div><div class="step-body"><div class="step-text"><strong>Cancellations Report</strong> — canceled reservations and events. Filter by court, member, or date.</div></div></div>
+          <div class="step" data-sid="step-179" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">14</div><div class="step-body"><div class="step-text"><strong>Waivers Report</strong> — who has signed which waiver and when; who hasn't signed yet. Critical for legal compliance.</div></div></div>
+          <div class="step" data-sid="step-180" data-mid="mod-23"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">15</div><div class="step-body"><div class="step-text"><strong>Packages Report</strong> — package usage per member, remaining punches, and expiration dates.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+    <!-- MODULE 24 -->
+    <div class="module" id="m24" data-mid="mod-24">
+      <div class="mod-header" onclick="tog('m24')">
+        <div class="mod-check" data-mid="mod-24" onclick="toggleModule(this)" title="Mark module complete"></div><div class="mod-num">24</div>
+        <div class="mod-info"><div class="mod-title">Module 24 — Widgets &amp; Organized Play</div><div class="mod-desc">Create 3 widget types, copy embed code, view real-world examples, and enable Organized Play</div></div>
+        <span class="kb-badge">KB sourced</span>
+        <button class="toggle-btn" id="btn-m24">Show steps <i class="chev">&#9660;</i></button>
+      </div>
+      <div class="panel" id="panel-m24">
+        <div class="kb-strip"><strong>KB sources:</strong>
+          <a href="https://intercom.help/courtreserve/en/articles/4805998-overview-widgets" target="_blank">Overview: Widgets</a> ·
+          <a href="https://intercom.help/courtreserve/en/articles/7246227-organized-play" target="_blank">Enable and Set Up Organized Play</a> ·
+          <a href="https://www.thekitchenpb.com/" target="_blank">The Kitchen PB (real widget example)</a> ·
+          <a href="https://www.luckyshotspickleball.com/" target="_blank">Lucky Shots PB (real widget example)</a>
+        </div>
+        <div class="task-section"><div class="task-label">Understand Widgets</div>
+          <div class="step" data-sid="step-181" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Widgets are embeddable tools clubs paste into their own website so members can book courts, register for events, or sign up without leaving the club's site.</div><div class="step-note">KB: "Widgets are designed to run in a web browser. System users can copy and paste a widget link onto their website or display it on a front desk smart TV."</div></div></div>
+          <div class="step" data-sid="step-182" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">Visit real examples: <a href="https://www.thekitchenpb.com/" target="_blank">The Kitchen PB</a>, <a href="https://www.luckyshotspickleball.com/" target="_blank">Lucky Shots PB</a>, <a href="https://www.ustanationalcampus.com/en/home.html" target="_blank">USTA National Campus</a>. Identify which widget types each club is using.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Create 3 Widgets</div>
+          <div class="step" data-sid="step-183" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Navigate: <code>Settings</code> > scroll to <code>WIDGET</code> row. Click the widget type icon you want to create.</div></div></div>
+          <div class="step" data-sid="step-184" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text"><strong>Widget 1 — Court Scheduler:</strong> Type = Courts Scheduler. Configure which courts to show and membership types allowed. Save. Copy the generated embed code and paste into a blank HTML file on your computer to see how it renders.</div></div></div>
+          <div class="step" data-sid="step-185" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text"><strong>Widget 2 — Events:</strong> Type = Events Calendar or Events List. Configure event categories, date range, and style. Save and copy embed code.</div></div></div>
+          <div class="step" data-sid="step-186" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">4</div><div class="step-body"><div class="step-text"><strong>Widget 3 — Member Registration:</strong> Type = Member Registration. This embeds the sign-up form on any external website. Save and copy embed code. This is what a web developer would paste into the club's WordPress or Squarespace site.</div></div></div>
+        </div><div class="tdiv"></div>
+        <div class="task-section"><div class="task-label">Bonus — Organized Play Setup</div>
+          <div class="step" data-sid="step-187" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">1</div><div class="step-body"><div class="step-text">Enable: <code>Settings</code> > <code>ADDITIONAL FEATURES</code> > <code>Additional Features</code> > scroll to <code>Enhanced Play</code> > check <code>Organized Play</code>. Click <code>Setup</code>.</div><div class="step-note">KB: "Organized Play is a dynamic and competitive format where players are matched using system-generated pairings based on their ratings. Admins can organize matches across multiple courts without manual scheduling."</div></div></div>
+          <div class="step" data-sid="step-188" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">2</div><div class="step-body"><div class="step-text">After enabling, a standalone <code>Organized Play</code> icon appears in the <code>ADDITIONAL FEATURES</code> row. Click it > configure your first event: set the courts, rating range, number of rounds, and registration window.</div></div></div>
+          <div class="step" data-sid="step-189" data-mid="mod-24"><div class="step-check" onclick="toggleStep(this)"></div><div class="step-n">3</div><div class="step-body"><div class="step-text">As a test member, register for the Organized Play event. As admin, generate pairings. View the match schedule from both admin and member portal perspectives.</div></div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+    </div>
+
+  </main><!-- end main -->
+</div><!-- end layout -->
+
+<div class="footer">
+  <strong>CourtReserve</strong> Customer Success · New Hire Sandbox Training Guide · Modules 1–24 · All steps sourced directly from the CourtReserve Knowledge Base
+</div>
+
+<script>
+var TOTAL_STEPS = 189;
+var TOTAL_MODS  = 24;
+var STEP_KEY = "cr_steps_v2";
+var MOD_KEY  = "cr_mods_v2";
+
+// ── Storage helpers ──────────────────────────────────────────────────────────
+function getSteps() { try { return JSON.parse(localStorage.getItem(STEP_KEY) || "{}"); } catch(e) { return {}; } }
+function getMods()  { try { return JSON.parse(localStorage.getItem(MOD_KEY)  || "{}"); } catch(e) { return {}; } }
+function saveSteps(d) { try { localStorage.setItem(STEP_KEY, JSON.stringify(d)); } catch(e) {} }
+function saveMods(d)  { try { localStorage.setItem(MOD_KEY,  JSON.stringify(d)); } catch(e) {} }
+
+// ── Progress bar ─────────────────────────────────────────────────────────────
+function updateProgressBar() {
+  var steps     = getSteps();
+  var mods      = getMods();
+  // Count: completed steps + (steps-per-completed-module already counted)
+  // Simple approach: progress = checked steps / total steps
+  var checkedSteps = Object.keys(steps).filter(function(k){ return steps[k]; }).length;
+  var checkedMods  = Object.keys(mods).filter(function(k){ return mods[k]; }).length;
+  // Weight: steps are the main unit; each manually-checked module counts as completing remaining steps
+  var pct = Math.round((checkedSteps / TOTAL_STEPS) * 100);
+  pct = Math.min(pct, 100);
+  var fill  = document.getElementById("progress-fill");
+  var pctEl = document.getElementById("progress-pct");
+  if (fill)  fill.style.width = pct + "%";
+  if (pctEl) pctEl.textContent = pct + "%";
+}
+
+// ── Module auto-complete check ───────────────────────────────────────────────
+function checkModuleCompletion(mid) {
+  var allSteps = document.querySelectorAll(".step[data-mid='" + mid + "']");
+  if (allSteps.length === 0) return;
+  var allDone = true;
+  allSteps.forEach(function(s) { if (!s.classList.contains("done")) allDone = false; });
+  var modEl    = document.querySelector(".module[data-mid='" + mid + "']");
+  var checkEl  = document.querySelector(".mod-check[data-mid='" + mid + "']");
+  var mods = getMods();
+  if (allDone) {
+    mods[mid] = true;
+    saveMods(mods);
+    if (checkEl) { checkEl.classList.add("checked"); checkEl.classList.add("auto"); checkEl.title = "All steps complete!"; }
+    if (modEl)   modEl.classList.add("complete");
+  } else {
+    // Only remove auto-complete — don't remove if manually checked
+    if (checkEl && checkEl.classList.contains("auto")) {
+      checkEl.classList.remove("checked");
+      checkEl.classList.remove("auto");
+      checkEl.title = "Mark module complete";
+      mods[mid] = false;
+      saveMods(mods);
+      if (modEl) modEl.classList.remove("complete");
+    }
+  }
+}
+
+// ── Toggle a step ─────────────────────────────────────────────────────────────
+function toggleStep(checkEl) {
+  var stepEl = checkEl.parentElement;
+  var sid    = stepEl.getAttribute("data-sid");
+  var mid    = stepEl.getAttribute("data-mid");
+  if (!sid) return;
+  var steps   = getSteps();
+  var checked = !steps[sid];
+  steps[sid]  = checked;
+  saveSteps(steps);
+  applyStepState(stepEl, checkEl, checked);
+  updateProgressBar();
+  if (mid) checkModuleCompletion(mid);
+}
+
+function applyStepState(stepEl, checkEl, checked) {
+  if (checked) {
+    checkEl.classList.add("checked");
+    stepEl.classList.add("done");
+  } else {
+    checkEl.classList.remove("checked");
+    stepEl.classList.remove("done");
+  }
+}
+
+// ── Toggle a module manually ──────────────────────────────────────────────────
+function toggleModule(checkEl) {
+  // Stop click from also toggling the panel open/close
+  event.stopPropagation();
+  var mid    = checkEl.getAttribute("data-mid");
+  var modEl  = document.querySelector(".module[data-mid='" + mid + "']");
+  var mods   = getMods();
+  var steps  = getSteps();
+
+  // Toggle current state
+  var checked = !mods[mid];
+  mods[mid] = checked;
+  saveMods(mods);
+
+  if (checked) {
+    // Check the module header
+    checkEl.classList.add("checked");
+    checkEl.classList.remove("auto");
+    checkEl.title = "Click to uncheck all";
+    if (modEl) modEl.classList.add("complete");
+    // Check every step inside this module
+    document.querySelectorAll(".step[data-mid='" + mid + "']").forEach(function(stepEl) {
+      var sid = stepEl.getAttribute("data-sid");
+      steps[sid] = true;
+      var sc = stepEl.querySelector(".step-check");
+      if (sc) applyStepState(stepEl, sc, true);
+    });
+  } else {
+    // Uncheck the module header
+    checkEl.classList.remove("checked");
+    checkEl.classList.remove("auto");
+    checkEl.title = "Mark module complete";
+    if (modEl) modEl.classList.remove("complete");
+    // Uncheck every step inside this module
+    document.querySelectorAll(".step[data-mid='" + mid + "']").forEach(function(stepEl) {
+      var sid = stepEl.getAttribute("data-sid");
+      steps[sid] = false;
+      var sc = stepEl.querySelector(".step-check");
+      if (sc) applyStepState(stepEl, sc, false);
+    });
+  }
+
+  saveSteps(steps);
+  updateProgressBar();
+}
+
+// ── Master reset ──────────────────────────────────────────────────────────────
+function masterReset() {
+  // Show custom dialog — avoids browser confirm() blocking on GitHub Pages
+  var overlay = document.getElementById("confirm-overlay");
+  if (overlay) overlay.classList.add("show");
+}
+
+function closeConfirm() {
+  var overlay = document.getElementById("confirm-overlay");
+  if (overlay) overlay.classList.remove("show");
+}
+
+function doReset() {
+  closeConfirm();
+  localStorage.removeItem(STEP_KEY);
+  localStorage.removeItem(MOD_KEY);
+  // Clear all step checkboxes and done state
+  document.querySelectorAll(".step[data-sid]").forEach(function(stepEl) {
+    stepEl.classList.remove("done");
+    var checkEl = stepEl.querySelector(".step-check");
+    if (checkEl) checkEl.classList.remove("checked");
+  });
+  // Clear all module checkboxes and complete state
+  document.querySelectorAll(".module[data-mid]").forEach(function(modEl) {
+    modEl.classList.remove("complete");
+    var checkEl = modEl.querySelector(".mod-check");
+    if (checkEl) {
+      checkEl.classList.remove("checked");
+      checkEl.classList.remove("auto");
+      checkEl.title = "Mark module complete";
+    }
+  });
+  updateProgressBar();
+}
+
+// ── Load saved progress on startup ───────────────────────────────────────────
+function loadSavedProgress() {
+  var steps = getSteps();
+  var mods  = getMods();
+
+  document.querySelectorAll(".step[data-sid]").forEach(function(stepEl) {
+    var sid = stepEl.getAttribute("data-sid");
+    if (steps[sid]) {
+      var checkEl = stepEl.querySelector(".step-check");
+      if (checkEl) applyStepState(stepEl, checkEl, true);
+    }
+  });
+
+  document.querySelectorAll(".mod-check[data-mid]").forEach(function(checkEl) {
+    var mid   = checkEl.getAttribute("data-mid");
+    var modEl = document.querySelector(".module[data-mid='" + mid + "']");
+    if (mods[mid]) {
+      checkEl.classList.add("checked");
+      if (modEl) modEl.classList.add("complete");
+      // Check if it was auto (all steps done)
+      var allSteps = document.querySelectorAll(".step[data-mid='" + mid + "']");
+      var allDone  = allSteps.length > 0;
+      allSteps.forEach(function(s) { if (!s.classList.contains("done")) allDone = false; });
+      if (allDone) checkEl.classList.add("auto");
+    }
+  });
+
+  updateProgressBar();
+}
+
+// ── Navigation helpers ────────────────────────────────────────────────────────
+function showProgressBar() {
+  // Progress bar is always visible in training section — no action needed
+}
+
+function tog(id) {
+  var panel = document.getElementById("panel-" + id);
+  var btn   = document.getElementById("btn-" + id);
+  var open  = panel.classList.toggle("open");
+  btn.classList.toggle("open", open);
+  btn.innerHTML = open
+    ? "Hide steps <i class=\"chev\">&#9660;</i>"
+    : "Show steps <i class=\"chev\">&#9660;</i>";
+}
+
+function openMod(id) {
+  var panel = document.getElementById("panel-" + id);
+  var btn   = document.getElementById("btn-" + id);
+  if (!panel.classList.contains("open")) {
+    panel.classList.add("open");
+    btn.classList.add("open");
+    btn.innerHTML = "Hide steps <i class=\"chev\">&#9660;</i>";
+  }
+}
+
+function startTraining() {
+  showProgressBar();
+  document.getElementById("training-top").scrollIntoView({ behavior: "smooth" });
+}
+
+function goTo(id) {
+  showProgressBar();
+  setTimeout(function() {
+    var el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      openMod(id);
+    }
+  }, 400);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", function() {
+  loadSavedProgress();
+  // Cover page detection — add class to body while cover is in view
+  var cover = document.getElementById("cover");
+  if (cover) {
+    function checkScroll() {
+      var coverBottom = cover.getBoundingClientRect().bottom;
+      // Progress bar is inside training section so it naturally appears only after cover
+    }
+    checkScroll();
+    window.addEventListener("scroll", checkScroll, { passive: true });
+  }
+});
+</script>
+
+
+<!-- CUSTOM CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">&#9888;&#65039;</div>
+    <div class="confirm-title">Reset All Progress?</div>
+    <div class="confirm-msg">This will clear every checked step and module across all 24 modules. This cannot be undone.</div>
+    <div class="confirm-buttons">
+      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-ok" onclick="doReset()">Yes, Reset Everything</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
